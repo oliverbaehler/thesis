@@ -22,11 +22,31 @@ This project is built with Firebase and uses Firestore as a database. To get sta
 Before you get started, make sure you have the following software installed on your computer:
 
 - [Node.js](https://nodejs.org/en/download/)
-- Firebase CLI: `npm install -g firebase-tools`
+- Firebase CLI: `npm install -g firebase-tools firebase`
 
-### Makefile 
+### Firebase Emulators
 
-We use makefile commands to simplify the development process. You can find all available commands in the `Makefile` in the root directory of this project.
+Before running the emulators, we need to render the function config:
+
+firebase functions:config:get > functions/.runtimeconfig.json
+
+YOu can start up the emulator suite by running the following command:
+
+```bash
+firebase emulators:start
+```
+
+This will start up the Firestore emulator and other relevant services which are required for this project. You can find the port on which the emulator is exposed in the output of the command:
+
+```bash
+...
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4000/
+...
+```
+
+
+
 
 ### Structure
 
