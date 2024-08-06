@@ -7,8 +7,6 @@ import Rating from "@mui/material/Rating";
 
 import Favorite from "@mui/icons-material/Favorite";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
-import AddShoppingCart from "@mui/icons-material/AddShoppingCart"; 
-// LOCAL CUSTOM HOOK
 
 import useProduct from "../use-product"; 
 // GLOBAL CUSTOM COMPONENTS
@@ -22,9 +20,7 @@ import ProductViewDialog from "components/products-view/product-view-dialog";
 import { currency } from "lib"; 
 // CUSTOM COMPONENTS
 
-import { AddToCartButton, Card, CardMedia, FavoriteButton, QuickViewButton } from "./styles"; 
-// CUSTOM DATA MODEL
-
+import { Card, CardMedia, FavoriteButton, QuickViewButton } from "./styles"; 
 
 // ==============================================================
 export default function ProductCard8({
@@ -41,26 +37,11 @@ export default function ProductCard8({
     reviews
   } = product || {};
   const {
-    cartItem,
-    handleCartAmountChange,
     isFavorite,
     openModal,
     toggleDialog,
     toggleFavorite
   } = useProduct(slug); 
-// HANDLE ADD TO CART PRODUCT
-
-  const handleAddToCart = () => {
-    const payload = {
-      id,
-      slug,
-      price,
-      name: title,
-      imgUrl: thumbnail,
-      qty: (cartItem?.qty || 0) + 1
-    };
-    handleCartAmountChange(payload);
-  };
 
   return <Card>
       <CardMedia>
@@ -71,9 +52,6 @@ export default function ProductCard8({
         {
         /* ADD TO CART BUTTON */
       }
-        <AddToCartButton className="product-actions" onClick={handleAddToCart}>
-          <AddShoppingCart className="icon" fontSize="small" />
-        </AddToCartButton>
 
         {
         /* PRODUCT FAVORITE BUTTON */

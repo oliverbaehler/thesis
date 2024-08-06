@@ -7,12 +7,12 @@ import instagramLogo from '../../../../public/assets/images/icons/instagram.svg'
 
 const InstagramSignIn = () => {
   return (
-    <Button
-      onClick={() => signIn('instagram')}
-      fullWidth
+    <Button 
+      onClick={signInWithGoogle}
+      fullWidth 
       size="large"
-      className="instagramButton"
-      sx={{ fontSize: 12 }}
+      className="facebookButton" 
+      sx={{fontSize: 12}}
     >
       Continue with Instagram
     </Button>

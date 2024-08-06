@@ -12,8 +12,6 @@ import CategoryOutlined from "icons/CategoryOutline";
 import ShoppingBagOutlined from "icons/ShoppingBagOutlined"; 
 // GLOBAL CUSTOM HOOKS
 
-import useCart from "hooks/useCart"; 
-// STYLED COMPONENTS
 
 import { iconStyle, StyledBox, StyledDrawer, StyledNavLink, Wrapper } from "./styles";
 /**
@@ -25,15 +23,10 @@ import { iconStyle, StyledBox, StyledDrawer, StyledNavLink, Wrapper } from "./st
 export default function MobileNavigationBar2({
   children
 }) {
-  const {
-    state
-  } = useCart();
   const [open, setOpen] = useState(false);
   const DOWN_900 = useMediaQuery(theme => theme.breakpoints.down(900));
 
   const handleDrawerClose = () => setOpen(false);
-
-  const handleDrawerToggle = () => setOpen(state => !state);
 
   if (DOWN_900) {
     return <Box position="relative" display="flex" flexDirection="column">
@@ -51,11 +44,6 @@ export default function MobileNavigationBar2({
 // LINK INNER CONTENTS
           const ICON = <Icon sx={iconStyle} fontSize="small" />;
           const CONTENT = <Fragment>
-                {title === "Cart" ? <Badge badgeContent={state.cart.length} color="primary">
-                    {ICON}
-                  </Badge> : ICON}
-
-                {title}
               </Fragment>;
           return href ? <StyledNavLink key={title} href={href}>
                 {CONTENT}

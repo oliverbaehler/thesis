@@ -45,8 +45,19 @@ This will start up the Firestore emulator and other relevant services which are 
 ...
 ```
 
+You will need to add this to `next.config.js` (To Read images from the emulated firestorage):
 
-
+```
+const nextConfig = {
+  images: {
+    remotePatterns: [
+...
+      // Firebase Local (Dev Only)
+      { protocol: "http", hostname: "127.0.0.1", port: "9199" },
+    ]
+  }
+};
+```
 
 ### Structure
 

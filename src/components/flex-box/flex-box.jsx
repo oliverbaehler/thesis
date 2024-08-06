@@ -1,9 +1,18 @@
-import Box from "@mui/material/Box";
-export default function FlexBox({
-  children,
-  ...props
-}) {
-  return <Box display="flex" {...props}>
-      {children}
-    </Box>;
+import { useQRCode } from 'next-qrcode';
+export default function QRCode({url}) {
+  const { SVG } = useQRCode();
+
+  return(
+    <SVG
+      text={url}
+      options={{
+        margin: 2,
+        width: 200,
+        color: {
+          dark: '#010599FF',
+          light: '#FFBF60FF',
+        },
+      }}
+    />
+  );
 }

@@ -1,41 +1,47 @@
 import Image from "next/image"; 
-
 import Button from "@mui/material/Button";
 
-import { app } from "../../../firebase";
-import { getAuth } from "firebase/auth";
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { useRouter, useSearchParams } from "next/navigation";
+import { db } from "firebaseConfig";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
 import googleLogo from "../../../../public/assets/images/icons/google-1.svg";
 
-const handleGoogleSignIn = async () => {
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-  
-      //// Store user information in Firestore
-      //const userRef = doc(db, 'users', user.uid);
-      //await setDoc(userRef, {
-      //  uid: user.uid,
-      //  email: user.email,
-      //  displayName: user.displayName,
-      //  photoURL: user.photoURL,
-      //}, { merge: true });
-
-      console.log('Successfully signed in with Google:', user);
-  
-      //router.push('/discover');
-    } catch (error) {
-      console.error('Error signing in with Google:', error);
-    }
-  };
-
 const GoogleSignIn = () => {
+    const router = useRouter()
+    const searchParams = useSearchParams();
+    const redirectTo = searchParams.get('redirectTo'); 
+
+    const handleGoogleSignIn = async (redirectTo) => {;
+      const auth = getAuth();
+      const provider = new GoogleAuthProvider();
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+    
+        // Store user information in Firestore
+        const userRef = doc(db, "users", user.uid);
+        await setDoc(userRef, {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+        }, { merge: true });
+    
+        console.log('Successfully signed in with Google:', user);
+        
+        // Redirect to the specified page
+        router.push(redirectTo || '/dashboard');
+    
+      } catch (error) {
+        console.error('Error signing in with Google:', error);
+      }
+    };
+
     return (
       <Button 
-        onClick={handleGoogleSignIn}
+        onClick={() => handleGoogleSignIn(redirectTo)}
         fullWidth 
         size="large"
         className="googleButton" 

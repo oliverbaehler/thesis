@@ -15,18 +15,20 @@ const handler = NextAuth({
       strategy: "jwt",
     },
     callbacks: {
-      async jwt({ token, account }) {
-        // Persist the OAuth access_token to the token right after signin
-        if (account) {
-          token.accessToken = account.access_token
+      async jwt(token, user, account, profile, isNewUser) {
+        if (account?.accessToken) {
+          token.accessToken = account.accessToken;
+          // Create custom JWT token here
+          const firebaseAdmin = getFirebaseAdmin();
+          const customToken = await firebaseAdmin.auth().createCustomToken(user.id);
+          token.firebaseToken = customToken;
         }
-        return token
+        return token;
       },
-      async session({ session, token, user }) {
-        // Send properties to the client, like an access_token from a provider.
-        session.accessToken = token.accessToken
-        return session
-      }
+      async session(session, token) {
+        session.user.firebaseToken = token.firebaseToken;
+        return session;
+      },
     },
     pages: {
       signIn: '/auth/login',

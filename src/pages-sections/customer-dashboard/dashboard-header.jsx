@@ -11,7 +11,7 @@ import { Menu } from "@mui/icons-material";
 import SideNav from "components/side-nav";
 import { H2 } from "components/Typography";
 import FlexBox from "components/flex-box/flex-box";
-import { Navigation } from "components/layouts/customer-dashboard";
+import { Navigation } from "components/layouts/creator-dashboard";
 import { IconButton } from "@mui/material"; 
 // STYLED COMPONENT
 

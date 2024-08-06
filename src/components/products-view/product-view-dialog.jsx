@@ -18,8 +18,6 @@ import FlexBox from "components/flex-box/flex-box";
 import { H1, H2, H3, H6, Paragraph } from "components/Typography"; 
 // LOCAL CUSTOM HOOKS
 
-import useCart from "hooks/useCart"; 
-// CUSTOM UTILS LIBRARY FUNCTION
 
 import { currency } from "lib"; 
 // =====================================================
@@ -32,22 +30,6 @@ export default function ProductViewDialog(props) {
     openDialog,
     handleCloseDialog
   } = props;
-  const {
-    state,
-    dispatch
-  } = useCart();
-  const cartItem = state.cart.find(item => item.id === product.id);
-
-  const handleCartAmountChange = amount => () => {
-    dispatch({
-      type: "CHANGE_CART_AMOUNT",
-      payload: { ...product,
-        qty: amount,
-        name: product.title,
-        imgUrl: product.imgGroup[0]
-      }
-    });
-  };
 
   return <Dialog open={openDialog} maxWidth={false} onClose={handleCloseDialog} sx={{
     zIndex: 1501
@@ -64,7 +46,7 @@ export default function ProductViewDialog(props) {
               color: "primary.main",
               backgroundColor: "transparent"
             }}>
-                {product.imgGroup.map((item, index) => <BazaarImage key={index} src={item} alt="product" sx={{
+                {product.images.map((item, index) => <BazaarImage key={index} src={item} alt="product" sx={{
                 mx: "auto",
                 width: "100%",
                 objectFit: "contain",
@@ -98,31 +80,6 @@ export default function ProductViewDialog(props) {
               <Divider sx={{
               mb: 2
             }} />
-
-              {!cartItem?.qty ? <Button size="large" color="dark" variant="contained" onClick={handleCartAmountChange(1)} sx={{
-              height: 45,
-              borderRadius: 2
-            }}>
-                  Add to Cart
-                </Button> : <FlexBox alignItems="center">
-                  <Button size="small" color="dark" variant="outlined" sx={{
-                p: ".6rem",
-                height: 45
-              }} onClick={handleCartAmountChange(cartItem?.qty - 1)}>
-                    <Remove fontSize="small" />
-                  </Button>
-
-                  <H3 fontWeight="600" mx={2.5}>
-                    {cartItem?.qty.toString().padStart(2, "0")}
-                  </H3>
-
-                  <Button size="small" color="dark" variant="outlined" sx={{
-                p: ".6rem",
-                height: 45
-              }} onClick={handleCartAmountChange(cartItem?.qty + 1)}>
-                    <Add fontSize="small" />
-                  </Button>
-                </FlexBox>}
             </Grid>
           </Grid>
         </div>

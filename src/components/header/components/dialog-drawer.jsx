@@ -7,13 +7,10 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { LoginPageView } from "pages-sections/sessions/page-view"; 
 // GLOBAL CUSTOM COMPONENTS
 
-import { MiniCart } from "components/mini-cart"; 
 // LOGIN PAGE SECTIONS
 
 import { Wrapper } from "pages-sections/sessions/styles";
 import LogoWithTitle from "pages-sections/sessions/components/logo-title";
-import LoginBottom from "pages-sections/sessions/components/login-bottom";
-import SocialButtons from "pages-sections/sessions/components/socials"; 
 // ==============================================================
 
 
@@ -33,15 +30,12 @@ export default function DialogDrawer(props) {
         <Wrapper>
           <LogoWithTitle />
           <LoginPageView closeDialog={toggleDialog} />
-          <SocialButtons />
-          <LoginBottom />
         </Wrapper>
       </Dialog>
 
       <Drawer open={sidenavOpen} anchor="right" onClose={toggleSidenav} sx={{
       zIndex: 9999
     }}>
-        <MiniCart toggleSidenav={toggleSidenav} />
       </Drawer>
     </Fragment>;
 }

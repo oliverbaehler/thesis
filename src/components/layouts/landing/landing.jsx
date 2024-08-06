@@ -6,7 +6,6 @@ import Divider from "@mui/material/Divider";
 // GLOBAL CUSTOM COMPONENTS
 
 import Sticky from "components/sticky";
-import Topbar from "components/topbar";
 import { Footer4 } from "components/footer";
 import Header from "components/header";
 import NavigationList from "components/navbar/nav-list/nav-list";
@@ -33,14 +32,10 @@ export default function LandingLayout({
       <NavigationList />
     </div>;
   return <Fragment>
-      {
-      /* TOP BAR SECTION */
-    }
-      <Topbar />
 
       {
       /* HEADER */
-    }
+      }
       <Sticky fixedOn={0} onSticky={toggleIsFixed} scrollDistance={300}>
         <Header isFixed={isFixed} midSlot={HEADER_SLOT} />
         <Divider />
@@ -48,7 +43,7 @@ export default function LandingLayout({
 
       {
       /* BODY CONTENT */
-    }
+      }
       {children}
 
       {

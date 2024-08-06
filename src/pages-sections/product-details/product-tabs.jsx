@@ -24,20 +24,15 @@ const StyledTabs = styled(Tabs)(({
     textTransform: "capitalize"
   }
 }));
-export default function ProductTabs() {
+export default function ProductTabs({ description }) {
   const [selectedOption, setSelectedOption] = useState(0);
-
-  const handleOptionClick = (_, value) => setSelectedOption(value);
-
   return <>
-      <StyledTabs textColor="primary" value={selectedOption} indicatorColor="primary" onChange={handleOptionClick}>
+      <StyledTabs textColor="primary" value={selectedOption} indicatorColor="primary">
         <Tab className="inner-tab" label="Description" />
-        <Tab className="inner-tab" label="Review (3)" />
       </StyledTabs>
 
       <Box mb={6}>
-        {selectedOption === 0 && <ProductDescription />}
-        {selectedOption === 1 && <ProductReview />}
+        {selectedOption === 0 && <ProductDescription description={description}/>}
       </Box>
     </>;
 }
