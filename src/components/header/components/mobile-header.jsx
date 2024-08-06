@@ -17,7 +17,6 @@ import DialogDrawer from "./dialog-drawer";
 
 import Image from "components/BazaarImage";
 import { Paragraph } from "components/Typography";
-import { SearchInput } from "components/search-box";
 import { MobileMenu } from "components/navbar/mobile-menu";
 import { FlexBetween, FlexBox } from "components/flex-box"; 
 import { useRouter } from 'next/navigation';

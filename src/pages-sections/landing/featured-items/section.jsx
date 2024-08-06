@@ -8,11 +8,15 @@ import Heading from "../shared/heading";
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "firebaseConfig";
+import { useAuth } from "contexts/SessionContext";
+
+
 
 import ProductCard from "components/product-card/"; 
 
 export default function Section11() {
   const [products, setProducts] = useState([]);
+  const { user } = useAuth(); 
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -20,8 +24,8 @@ export default function Section11() {
         // Fetch all products from Firestore
         const querySnapshot = await getDocs(collection(db, "products"));
         const allProducts = querySnapshot.docs.map(doc => {
-          const data = doc.data();
-          return {
+        const data = doc.data();
+        return {
               id: doc.id,
               collectionId: data.collectionId,
               collectionName: data.collectionName,
@@ -29,13 +33,14 @@ export default function Section11() {
               name: data.name,
               images: data.imageUrls,
               published: data.published,
+              thumbnail: data.thumbnail
             };
         });
 
         console.log('All Products:', allProducts);
         // Filter products to include only those with imageUrls set and published is true
         const filteredProducts = allProducts.filter(
-          product => product.images && product.images.length > 0 && product.published === true
+          product => product.thumbnail && product.published === true
         );
         console.log('Filtered Products:', filteredProducts);
         const selectedProducts = filteredProducts.slice(0, 6);

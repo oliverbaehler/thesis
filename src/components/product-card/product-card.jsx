@@ -27,6 +27,7 @@ export default function ProductCard({
     description,
     name,
     images,
+    thumbnail,
   } = product || {};
   const {
     isFavorite,
@@ -34,8 +35,6 @@ export default function ProductCard({
     toggleDialog,
     toggleFavorite
   } = useProduct(id);
-
-  const thumbnail = images && images.length > 0 ? images[0] : "/placeholder.png";
 
   return <Card>
       <CardMedia>

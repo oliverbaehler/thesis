@@ -3,10 +3,15 @@ import { useRouter } from "next/navigation";
 import Avatar from "@mui/material/Avatar"; 
 // MUI ICON COMPONENTS
 
+import Link from '@mui/material/Link';
+import QrCodeIcon from '@mui/icons-material/QrCode';
+import Edit from "@mui/icons-material/Edit";
 import Delete from "@mui/icons-material/Delete";
-import RemoveRedEye from "@mui/icons-material/RemoveRedEye"; 
+import RemoveRedEye from "@mui/icons-material/RemoveRedEye";  
+import { Paragraph, Small } from "components/Typography";
 // GLOBAL CUSTOM COMPONENT
 
+import { FlexBox } from "components/flex-box";
 import BazaarSwitch from "components/BazaarSwitch"; 
 // STYLED COMPONENTS
 
@@ -33,6 +38,44 @@ export default function CollectionRow({
   const handleNavigate = () => router.push(`/admin/categories/${slug}`);
 
   return <StyledTableRow tabIndex={-1} role="checkbox" selected={hasSelected}>
+      <StyledTableCell align="left">
+        <FlexBox alignItems="center" gap={1.5}>
+          <Avatar alt={name} src={image} sx={{
+          borderRadius: 2
+        }} />
+
+          <div>
+            <Paragraph fontWeight={600}>{name}</Paragraph>
+          </div>
+        </FlexBox>
+      </StyledTableCell>
+
+      <StyledTableCell align="left">
+        <FlexBox alignItems="center" gap={1.5}>
+          <div>
+            <Link href={`/dashboard/collections/${collectionId}`} passHref>
+              <Paragraph fontWeight={600}>{collectionName}</Paragraph>
+            </Link>
+          </div>
+        </FlexBox>
+      </StyledTableCell>
+
+      <StyledTableCell align="right">
+        <StyledIconButton onClick={() => router.push(`/dashboard/products/${id}`)}>
+          <Edit />
+        </StyledIconButton>
+
+        <StyledIconButton onClick={() => router.push(`/products/${id}`)}>
+          <RemoveRedEye/>
+        </StyledIconButton>
+
+        <StyledIconButton>
+          <Delete />
+        </StyledIconButton>
+      </StyledTableCell>
+
+
+
       <StyledTableCell align="center">#{id.split("-")[0]}</StyledTableCell>
 
       <StyledTableCell align="center">{name}</StyledTableCell>

@@ -18,9 +18,7 @@ import Remove from "@mui/icons-material/Remove";
 
 import LazyImage from "components/LazyImage";
 import { H1, H2, H3, H6 } from "components/Typography";
-import { FlexBox, FlexRowCenter } from "components/flex-box"; 
-
-import productVariants from "data/product-variants"; 
+import { FlexBox, FlexRowCenter } from "components/flex-box";  
 
 // ================================================================
 export default function ProductIntro({
@@ -33,7 +31,9 @@ export default function ProductIntro({
     images,
     collectionId,
     collectionName,
+    thumbnail
   } = product || {};
+  const allImages = [thumbnail, ...images];
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectVariants, setSelectVariants] = useState({
     option: "option 1",
@@ -60,9 +60,9 @@ export default function ProductIntro({
           </FlexBox>
 
           <FlexBox overflow="auto">
-            {images.map((url, ind) => <FlexRowCenter key={ind} width={64} height={64} minWidth={64} bgcolor="white" border="1px solid" borderRadius="10px" ml={ind === 0 ? "auto" : 0} style={{
+            {allImages.map((url, ind) => <FlexRowCenter key={ind} width={64} height={64} minWidth={64} bgcolor="white" border="1px solid" borderRadius="10px" ml={ind === 0 ? "auto" : 0} style={{
             cursor: "pointer"
-          }} onClick={handleImageClick(ind)} mr={ind === images.length - 1 ? "auto" : "10px"} borderColor={selectedImage === ind ? "primary.main" : "grey.400"}>
+          }} onClick={handleImageClick(ind)} mr={ind === allImages.length - 1 ? "auto" : "10px"} borderColor={selectedImage === ind ? "primary.main" : "grey.400"}>
                 <Avatar alt="product" src={url} variant="square" sx={{
               height: 40
             }} />

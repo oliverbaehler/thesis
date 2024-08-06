@@ -38,7 +38,6 @@
     "next": "14.1.0",
     "next-auth": "^4.24.7",
     "next-i18next": "^15.2.0",
-    "next-qrcode": "^2.5.1",
     "node-fetch": "^3.3.2",
     "notistack": "^3.0.1",
     "nprogress": "^0.2.0",

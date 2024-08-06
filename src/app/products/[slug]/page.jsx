@@ -15,65 +15,60 @@ export const metadata = {
   keywords: ["e-commerce", "e-commerce template", "next.js", "react"]
 };
 
-export default async function ProductDetails({
-  params
-}) {
-  let product = "";
-  let relatedProducts = [];
-  const { slug } = params;
 
+export async function fetchProductAndRelated(slug) {
+  if (!slug) {
+    notFound(); // Throw a 404 if no slug is provided
+  }
 
   try {
+    const docRef = adminDb.collection('products').doc(slug);
+    const docSnapshot = await docRef.get();
 
-    console.log("HELLO");
+    if (docSnapshot.exists) {
+      const productData = docSnapshot.data();
+      const product = {
+        id: docSnapshot.id,
+        name: productData.name,
+        description: productData.content,
+        images: productData.imageUrls,
+        collectionId: productData.collectionId,
+        collectionName: productData.collectionName,
+        thumbnail: productData.thumbnail
+      };
 
-    const { slug } = params;
-    if (slug) {
-      const docRef = adminDb.collection('products').doc(slug);
-      const docSnapshot = await docRef.get();
-      const allProducts = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-  
-      // Log all products (optional)
-      console.log("All Products:", allProducts);
+      // Fetch related products
+      const relatedProductsSnapshot = await adminDb.collection('products')
+        .where("collectionId", "==", product.collectionId)
+        .get();
 
+      const relatedProducts = relatedProductsSnapshot.docs.map(doc => ({
+        id: doc.id,
+        name: doc.data().name,
+        description: doc.data().content,
+        images: doc.data().imageUrls,
+        collectionId: doc.data().collectionId,
+        collectionName: doc.data().collectionName,
+        thumbnail: doc.data().thumbnail
+      }));
 
-      console.log("docSnap", docRef);
-      if (docSnap.exists()) {
-        const productData = docSnap.data();
-        product = {
-          id: docSnap.id,
-          name: productData.name,
-          description: productData.content,
-          images: productData.imageUrls,
-          collectionId: productData.collectionId,
-          collectionName: productData.collectionName,
-        };
-        
-        const collectionId = product.collectionId;
-
-        const productsCollectionRef = collection(db, "products");
-        const relatedProductsQuery = query(productsCollectionRef, where("collectionId", "==", collectionId));
-        const relatedProductsSnapshot = await getDocs(relatedProductsQuery);
-
-        relatedProducts = relatedProductsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          name: doc.data().name,
-          description: doc.data().content,
-          images: doc.data().imageUrls,
-          collectionId: doc.data().collectionId,
-          collectionName: doc.data().collectionName,
-        }));
-      } else {
-        console.log("NO SLUG", slug);
-        throw new Error("No slug provided");
-      }
+      return { product, relatedProducts };
     } else {
-      console.log("NO SLUG", slug);
-      throw new Error("No slug provided");
+      notFound(); // Throw a 404 if no document is found
     }
-
-    return <ProductDetailsPageView product={product} relatedProducts={relatedProducts} />;
   } catch (error) {
-    notFound();
+    console.error("Error fetching products:", error);
+    notFound(); // Throw a 404 in case of an error
   }
+}
+
+// Example usage in a React server component
+export default async function ProductDetails({ params }) {
+  const { slug } = params;
+
+  const { product, relatedProducts } = await fetchProductAndRelated(slug);
+
+  console.log('Product:', product);
+
+  return <ProductDetailsPageView product={product} relatedProducts={relatedProducts} />;
 }

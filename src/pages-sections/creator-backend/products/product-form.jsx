@@ -18,7 +18,7 @@ import * as yup from "yup";
 import { v4 as uuidv4 } from "uuid";
 import { db, storage } from "firebaseConfig";
 import { collection, doc, setDoc, updateDoc, getDocs, getDoc, query, where } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL, getMetadata } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL, getMetadata, uploadString, deleteObject } from "firebase/storage";
 import { useAuth } from "contexts/SessionContext";
 import DropZone from "components/DropZone";
 import { FlexBox } from "components/flex-box"; 
@@ -39,6 +39,7 @@ export default function ProductForm({ initialData, productId }) {
   const router = useRouter();
   const { user } = useAuth();
   const [files, setFiles] = useState([]);
+  const [thumbnail, setThumbnail] = useState("");
   const [content, setContent] = useState("");
   const [collections, setCollections] = useState([]);
   
@@ -65,7 +66,10 @@ export default function ProductForm({ initialData, productId }) {
     collectionId: "",
     published: true,
     content: "",
+    thumbnail: "",
   };
+
+  console.log('Initial Values:', INITIAL_VALUES);
 
   useEffect(() => {
     if (initialData) {
@@ -77,6 +81,7 @@ export default function ProductForm({ initialData, productId }) {
           preview: initialData.thumbnail,
           name: initialData.thumbnail.split('/').pop(),
         });
+        setThumbnail(initialData.thumbnail);
       }
       filesArray = filesArray.concat(initialData.imageUrls.map(url => ({
         preview: url,
@@ -94,76 +99,65 @@ export default function ProductForm({ initialData, productId }) {
     }
 
     try {
-      let docRef;
-      if (productId) {
-        // If editing, update the existing document in the 'products' collection
-        const docRef = doc(db, "products", productId);
-        const uploadedImageUrls = await uploadFiles(files, productId, user.uid);
-        const [thumbnail, ...imageUrls] = uploadedImageUrls;
-        await updateDoc(docRef, {
-          ...values,
-          name: values.name,
-          content: content || "",
-          published: values.published,
-          collectionName: collections.find(collection => collection.id === values.collectionId).name,
-          collectionId: values.collectionId, // Store the collectionId as an attribute
-          thumbnail: thumbnail,
-          imageUrls: imageUrls,
-          updatedAt: new Date(),
-        });
-      } else {
-        // If creating, create a new document in the 'products' collection
-        const newProductId = uuidv4();
-        const docRef = doc(db, "products", newProductId);
-        const uploadedImageUrls = await uploadFiles(files, newProductId, user.uid);
-        const [thumbnail, ...imageUrls] = uploadedImageUrls;
-        await setDoc(docRef, {
-          ...values,
-          name: values.name,
-          content: content || "",
-          published: values.published,
-          collectionName: collections.find(collection => collection.id === values.collectionId).name,
-          collectionId: values.collectionId, // Store the collectionId as an attribute
-          thumbnail: thumbnail,
-          imageUrls: imageUrls,
-          createdBy: user.uid,
-          createdByName: user.displayName,
-          createdAt: new Date(),
-        });
-        router.push(`/dashboard/products/${newProductId}`);
+      if (!productId) {
+        productId = uuidv4();
       }
+      const docRef = doc(db, "products", productId);
+      const uploadedImageUrls = await uploadFiles(files, productId, user.uid);
+      const [thumbnail, ...imageUrls] = uploadedImageUrls;
 
-      // Generate QR-Code if not already generated
-      const qrCodeDocRef = doc(db, "qr-codes", productId);
-      const qrCodeDocSnap = await getDoc(qrCodeDocRef);
-      if (!qrCodeDocSnap.exists()) {
-        await generateQRCode(productId);
-      }
+      const qr_code_url = await generateQRCode(productId, user.uid);
 
-      resetForm();
-      setFiles([]);
+      await setDoc(docRef, {
+        ...values,
+        name: values.name,
+        content: content || "",
+        published: values.published,
+        collectionName: collections.find(collection => collection.id === values.collectionId).name,
+        collectionId: values.collectionId, // Store the collectionId as an attribute
+        thumbnail: thumbnail,
+        imageUrls: imageUrls,
+        createdBy: user.uid,
+        createdByName: user.displayName,
+        createdAt: new Date(),
+        qr_code: qr_code_url || "",
+      });
+
+      router.push(`/dashboard/products/${productId}`);
+
     } catch (error) {
       console.error("Error saving product:", error);
     }
   };
 
-  const generateQRCode = async (productId) => {
+  const generateQRCode = async (productId, userId) => {
     try {
-      // Generate the QR code data URL
-      const url = `/codes/${productId}`;
-      const qrCodeDataUrl = await QRCode.toDataURL(url);
-  
-      const storageRef = ref(storage, `qr-codes/${productId}.png`);
-      await uploadString(storageRef, qrCodeDataUrl, 'data_url');
-      const downloadURL = await getDownloadURL(storageRef);
-  
-      await setDoc(doc(db, 'qr-codes', productId), {
-        productId: productId,
-        qrCodeUrl: downloadURL,
-        createdAt: new Date(),
-      });
-  
-      console.log('QR code generated and saved:', downloadURL);
+
+      const qrCodeDocRef = doc(db, "qr-codes", productId);
+      const qrCodeDocSnap = await getDoc(qrCodeDocRef);
+      if (!qrCodeDocSnap.exists()) {
+        // Generate the QR code data URL
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+        const url = `${baseUrl}/codes/${productId}`;
+        const qrCodeDataUrl = await QRCode.toDataURL(url);
+    
+        const storageRef = ref(storage, `${userId}/products/${productId}/${productId}-code.png`);
+        await uploadString(storageRef, qrCodeDataUrl, 'data_url');
+        const downloadURL = await getDownloadURL(storageRef);
+        console.log('QR code generated and saved:', downloadURL);
+        
+        // Save QR code URL to Firestore
+        const docRef = doc(db, "scans", productId);
+        await setDoc(docRef, {
+          redirectTo: `/products/${productId}`,
+          trackingObject: productId,
+          createdBy: userId,
+        });
+        
+        return downloadURL;
+      }
+
+
     } catch (error) {
       console.error('Error generating QR code:', error);
     }
@@ -173,22 +167,30 @@ export default function ProductForm({ initialData, productId }) {
 
   const uploadFiles = async (files, productId, userId) => {
     let imageUrls = [];
-  
+    
     for (const file of files) {
-      const storageRef = ref(storage, `${userId}/products/${productId}/${file.name}`);
-      
-      try {
-        const snapshot = await uploadBytes(storageRef, file);
-        const downloadURL = await getDownloadURL(snapshot.ref);
+      const downloadURL = await uploadFile(file, productId, userId);
+      if (downloadURL) {
         imageUrls.push(downloadURL);
-      } catch (error) {
-        console.log("GET HERE" + error.code)
       }
     }
+  
     return imageUrls;
   };
-
-
+  
+  const uploadFile = async (file, productId, userId) => {
+    const storageRef = ref(storage, `${userId}/products/${productId}/${file.name}`);
+    
+    try {
+      const snapshot = await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      return downloadURL;
+    } catch (error) {
+      console.log("Error uploading file:", error.code);
+      return null;
+    }
+  };
+  
   const handleChangeDropZone = (newFiles) => {
     const updatedFiles = [...files];
     
@@ -204,8 +206,22 @@ export default function ProductForm({ initialData, productId }) {
     setFiles(updatedFiles);
   };
 
-  const handleFileDelete = (file) => () => {
-    setFiles((files) => files.filter(item => item.name !== file.name));
+  const handleFileDelete = (file) => async () => {
+    if (productId) {
+      const fileRef = ref(storage, `${user.uid}/products/${productId}/${file.name}`);
+    
+      try {
+        await deleteObject(fileRef);
+      } catch (error) {
+        console.error(`Error deleting file ${file.name} from storage:`, error);
+      }
+      const filteredFiles = files.filter(item => item.name !== file.name);
+      if (filteredFiles.length > 0 && file.preview === thumbnail) {
+        setThumbnail(filteredFiles[0].preview);
+      }
+  
+      setFiles(filteredFiles);
+    }
   };
 
 

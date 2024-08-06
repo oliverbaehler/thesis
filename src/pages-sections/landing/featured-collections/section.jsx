@@ -2,6 +2,8 @@ import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container"; 
 // STYLED COMPONENTS
 
+import Heading from "../shared/heading"; 
+
 import Card1 from "./components/card-1";
 import Card2 from "./components/card-2";
 import Card3 from "./components/card-3";
@@ -10,6 +12,7 @@ import Card5 from "./components/card-5";
 import Card6 from "./components/card-6";
 export default function Section1() {
   return <Container>
+      <Heading title="Featured Items" />
       <Grid container spacing={3}>
         {
         /* MEN'S COLLECTION BANNER SECTION */

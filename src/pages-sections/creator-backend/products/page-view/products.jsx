@@ -33,6 +33,11 @@ const tableHeading = [{
   label: "Collection",
   align: "left"
 }, {
+  id: "qr-code",
+  label: "QR Code",
+  align: "left"
+},
+{
   id: "action",
   label: "Action",
   align: "right"
@@ -66,8 +71,6 @@ export default function ProductsPageView({}) {
     fetchProducts();
   }, []);
 
-
-  console.log('Products:', productList);
   const filteredProducts = productList.map(item => ({
     id: item.id,
     name: item.name,
@@ -75,7 +78,9 @@ export default function ProductsPageView({}) {
     collectionName: item.collectionName,
     image: item.thumbnail,
     published: item.published,
+    qrCodeImage: item.qr_code
   }));
+  console.log('Products:', filteredProducts);
   const {
     order,
     orderBy,

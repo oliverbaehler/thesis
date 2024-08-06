@@ -2,24 +2,29 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Avatar from "@mui/material/Avatar"; 
+import Avatar from "@mui/material/Avatar";
+import Image from 'next/image' 
 // MUI ICON COMPONENTS
 
+import QrCodeIcon from '@mui/icons-material/QrCode';
 import Edit from "@mui/icons-material/Edit";
 import Delete from "@mui/icons-material/Delete";
 import RemoveRedEye from "@mui/icons-material/RemoveRedEye"; 
 import Link from '@mui/material/Link';
 // GLOBAL CUSTOM COMPONENTS
 import dynamic from 'next/dynamic';
-import { QRCode } from "components/qr-code";
+import Box from '@mui/material/Box';
 import { FlexBox } from "components/flex-box";
 import BazaarSwitch from "components/BazaarSwitch";
 import { Paragraph, Small } from "components/Typography"; 
 
 import { StyledTableRow, CategoryWrapper, StyledTableCell, StyledIconButton } from "../styles"; 
-
-// Dynamically import the QR code component with SSR disabled
-const QRCodeComponent = dynamic(() => import("components/qr-code").then(mod => mod.QRCode), { ssr: false });
+import Popover from '@mui/material/Popover';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import DownloadIcon from '@mui/icons-material/Download';
 
 
 // ========================================================================
@@ -35,16 +40,31 @@ export default function ProductRow({
     collectionId,
     collectionName,
     image,
-    published
+    published,
+    qrCodeImage
   } = product || {};
   const router = useRouter();
-  const [productPublish, setProductPublish] = useState(published);
-  const [showQRCode, setShowQRCode] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleQRCodeClick = () => {
-    setShowQRCode(!showQRCode);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = qrCodeImage;
+    link.download = name + "-qrcode.png";
+    link.click();
+  };
+
+  const open = Boolean(anchorEl);
+  const popup_id = open ? 'qr-popover' : undefined;
+
+  console.log("published" + published + "qrcode" + qrCodeImage);
 
   return <StyledTableRow tabIndex={-1} role="checkbox">
       <StyledTableCell align="left">
@@ -70,11 +90,62 @@ export default function ProductRow({
       </StyledTableCell>
 
       <StyledTableCell align="left">
-        <button onClick={handleQRCodeClick}>
-          {showQRCode ? "Hide QR Code" : "Generate QR Code"}
-        </button>
-        {showQRCode && <QRCodeComponent url={`https://example.com/products/${id}`} />}
+        <StyledIconButton onClick={handleClick}>
+          <QrCodeIcon />
+        </StyledIconButton>
       </StyledTableCell>
+
+      <Popover
+        id={popup_id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
+        <Card>
+          <CardContent>
+            <Typography variant="h6" gutterBottom>
+              Product Code
+            </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                p: 2,
+                width: { xs: '250px', sm: '300px', md: '350px' },
+                height: 'auto',
+              }}
+            >
+              <Image
+                    src={qrCodeImage}
+                    width='100%'
+                    height='auto'
+                    alt="QR Code"
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<DownloadIcon />}
+                onClick={handleDownload}
+              >
+                Download
+              </Button>
+            </Box>
+          </CardContent>
+        </Card>
+      </Popover>
+
+
+
 
       <StyledTableCell align="right">
         <StyledIconButton onClick={() => router.push(`/dashboard/products/${id}`)}>

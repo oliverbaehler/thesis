@@ -45,10 +45,16 @@ const Carousel = forwardRef((props, ref) => {
     }),
     ...others
   };
-  return <RootStyle space={spaceBetween}>
+  return (
+    <RootStyle space={spaceBetween}>
       <SlickCarousel ref={ref} {...settings}>
         {children}
       </SlickCarousel>
-    </RootStyle>;
+    </RootStyle>
+  );
 });
+
+// Set the display name for debugging purposes
+Carousel.displayName = "Carousel";
+
 export default Carousel;
