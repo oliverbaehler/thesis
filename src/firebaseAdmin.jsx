@@ -1,6 +1,6 @@
 import admin from 'firebase-admin';
 
-process.env['FIRESTORE_EMULATOR_HOST'] = 'localhost:8080';
+//process.env['FIRESTORE_EMULATOR_HOST'] = 'localhost:8080';
 
 if (!admin.apps.length) {
   admin.initializeApp({
