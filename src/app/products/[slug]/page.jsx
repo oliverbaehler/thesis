@@ -1,6 +1,4 @@
-import { useParams, notFound } from "next/navigation"; 
-import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
-import { db } from "firebaseConfig";
+
 import { adminDb } from 'firebaseAdmin';
 
 import { ProductDetailsPageView } from "pages-sections/product-details/page-view"; 
