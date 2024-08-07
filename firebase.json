@@ -7,8 +7,8 @@
     "source": ".",
     "ignore": [
       "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      ".github/"
     ],
     "frameworksBackend": {
       "region": "europe-west1"
@@ -40,6 +40,7 @@
   },
   "functions": [
     {
+      "runtime": "nodejs20",
       "source": "functions",
       "codebase": "default",
       "ignore": [

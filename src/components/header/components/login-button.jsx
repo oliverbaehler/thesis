@@ -16,13 +16,22 @@ export default function LoginCartButtons({
     color: "grey.600"
   };
 
+  const handleRedirect = () => {
+    router.push("/dashboard/settings");
+  };
+
+
   return <div>
-      {!user ? (
-        <CustomButton href="/dashboard" startIcon={<Globe sx={{
-          color: "grey.900"
-        }} />}>
+      {user ? (
+        <>
+          <CustomButton href="/dashboard" startIcon={<Globe sx={{ color: "grey.900" }} />}>
             Dashboard
-        </CustomButton>
+          </CustomButton>
+          <IconButton onClick={handleRedirect}>
+            {/* You could show a user avatar or some other icon here */}
+            <PersonOutline sx={{ ...ICON_COLOR, color: "gray" }} /> {/* Example: Change color or show different icon */}
+          </IconButton>
+        </>
       ) : (
         <CustomButton onClick={toggleDialog} startIcon={<LoginIcon sx={{
           color: "grey.900"
@@ -30,11 +39,5 @@ export default function LoginCartButtons({
             Login
         </CustomButton>
       )}
-        <IconButton onClick={toggleDialog}>
-          {/* You could show a user avatar or some other icon here */}
-          <PersonOutline sx={{ ...ICON_COLOR, color: "blue" }} /> {/* Example: Change color or show different icon */}
-        </IconButton>
-
-
     </div>;
 }
