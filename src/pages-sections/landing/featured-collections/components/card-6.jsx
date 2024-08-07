@@ -7,11 +7,8 @@ import { H3, Span, Paragraph } from "components/Typography";
 import { Card6Wrapper } from "../styles"; 
 // IMPORT IMAGES
 
-import banner5 from "../../../../../public/assets/images/banners/banner-43.png";
 export default function Card6() {
   return <Card6Wrapper>
-      <Image src={banner5} alt="banner" className="banner-img" />
-
       <div className="content">
         <Span fontSize={16}>#EXCLUSIVE</Span>
 

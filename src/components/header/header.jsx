@@ -37,7 +37,7 @@ export default function Header({
     }
       <FlexBox minWidth={100} alignItems="center">
         <Link href="/">
-          <LazyImage src={require("../../../public/assets/images/logo2.svg")} alt="logo" />
+          <LazyImage src={require("../../../public/assets/images/brand/black.png")} alt="logo" />
         </Link>
       </FlexBox>
 

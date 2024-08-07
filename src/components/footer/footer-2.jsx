@@ -29,15 +29,12 @@ export default function Footer2() {
       <Grid container spacing={6}>
         <Grid item sm={6} xs={12}>
           <Link href="/">
-            <BazaarImage mb={2.5} src="/assets/images/logo.svg" alt="logo" />
+            <BazaarImage mb={2.5} src="/assets/images/brand/black.png" alt="logo" />
           </Link>
 
           <Paragraph mb={2.5} color="grey.500" maxWidth="370px">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Auctor libero id et, in
-            gravida. Sit diam duis mauris nulla cursus. Erat et lectus vel ut sollicitudin elit at
-            amet.
+            <strong>Note</strong>: This is a demo website. The products are not for sale nor is this data production-ready. Currently only at prototype stage 
           </Paragraph>
-
           <AppStore />
         </Grid>
 

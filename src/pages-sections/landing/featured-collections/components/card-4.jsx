@@ -7,11 +7,8 @@ import { H3, Span } from "components/Typography";
 import { Card4Wrapper } from "../styles"; 
 // IMPORT IMAGES
 
-import banner4 from "../../../../../public/assets/images/banners/banner-42.png";
 export default function Card4() {
   return <Card4Wrapper>
-      <Image src={banner4} alt="banner" className="banner-img" />
-
       <div className="content">
         <Span fontSize={16}>#SUNGLASSES</Span>
 

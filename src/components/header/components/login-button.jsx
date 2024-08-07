@@ -1,6 +1,6 @@
 import IconButton from "@mui/material/IconButton"; 
 import PersonOutline from "@mui/icons-material/PersonOutline"; 
-
+import { useRouter } from "next/navigation";
 import { useAuth } from "contexts/SessionContext";
 
 import Globe from "icons/Globe";
@@ -11,6 +11,7 @@ import { CustomButton, ToggleWrapper } from "./styles";
 export default function LoginCartButtons({
   toggleDialog,
 }) {
+  const router = useRouter();
   const { user } = useAuth();
   const ICON_COLOR = {
     color: "grey.600"
@@ -20,7 +21,6 @@ export default function LoginCartButtons({
     router.push("/dashboard/settings");
   };
 
-
   return <div>
       {user ? (
         <>
@@ -28,8 +28,11 @@ export default function LoginCartButtons({
             Dashboard
           </CustomButton>
           <IconButton onClick={handleRedirect}>
-            {/* You could show a user avatar or some other icon here */}
-            <PersonOutline sx={{ ...ICON_COLOR, color: "gray" }} /> {/* Example: Change color or show different icon */}
+           {user.photoURL ? (
+            <Avatar alt="User Avatar" src={user.photoURL} />
+           ) : (
+            <PersonOutline sx={{ ...ICON_COLOR, color: "gray" }} />
+           )}
           </IconButton>
         </>
       ) : (

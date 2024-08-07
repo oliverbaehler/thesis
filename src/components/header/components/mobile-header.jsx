@@ -44,6 +44,10 @@ export default function MobileHeader() {
     router.push('/dashboard');
   };
 
+  const handleUser = () => {
+    router.push('/dashboard/user-settings');
+  };  
+
   return <Fragment>
       <FlexBetween width="100%">
 
@@ -52,17 +56,30 @@ export default function MobileHeader() {
         </Box>
 
         <Link href="/">
-          <Image height={44} src="/assets/images/bazaar-black-sm.svg" alt="logo" />
+          <Image height={44} src="/assets/images/brand/black.png" alt="logo" />
         </Link>
 
         <FlexBox justifyContent="end" flex={1}>
+        {user ? (
+        <>
           <IconButton onClick={handleNavigation}>
             <Icon.Home sx={ICON_STYLE} />
           </IconButton>
-
-          <IconButton onClick={toggleDialog}>
-            <Icon.User sx={ICON_STYLE} />
+          <IconButton onClick={handleUser}>
+           {user.photoURL ? (
+            <Avatar alt="User Avatar" src={user.photoURL} />
+           ) : (
+            <PersonOutline sx={{ ...ICON_COLOR, color: "gray" }} />
+           )}
           </IconButton>
+        </>
+        ) : (
+          <CustomButton onClick={toggleDialog} startIcon={<LoginIcon sx={{
+            color: "grey.900"
+          }} />}>
+              Login
+          </CustomButton>
+        )}
         </FlexBox>
       </FlexBetween>
 

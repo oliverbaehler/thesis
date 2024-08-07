@@ -7,11 +7,8 @@ import { H3, Span } from "components/Typography";
 import { Card3Wrapper } from "../styles"; 
 // IMPORT IMAGES
 
-import banner3 from "../../../../../public/assets/images/banners/banner-41.png";
 export default function Card3() {
   return <Card3Wrapper>
-      <Image src={banner3} alt="banner" className="banner-img" />
-
       <div className="content">
         <Span fontSize={16}>#DRESS</Span>
 

@@ -17,4 +17,4 @@ jobs:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_PARIAHS_E621E }}
           channelId: live
-          projectId: pariahs-e621e
+          projectId: pariah-prod

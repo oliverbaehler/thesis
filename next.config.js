@@ -6,6 +6,7 @@ const nextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "ui-lib.com" },
       { protocol: "https", hostname: "pariah-e2602.web.app" },
+      { protocol: "https", hostname: "pariahs.fans" },
       // Firebase Local (Dev Only)
       { protocol: "http", hostname: "127.0.0.1", port: "9199" },
     ]
