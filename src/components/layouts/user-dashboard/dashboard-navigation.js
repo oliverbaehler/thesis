@@ -26,17 +26,9 @@ export const navigation = [{
   type: "label",
   label: "User"
 }, {
-  name: "Shop Setting",
-  icon: duotone.SiteSetting,
-  path: "/vendor/shop-settings"
-},{
   name: "Account Settings",
   icon: duotone.AccountSetting,
-  path: "/vendor/account-settings"
-}, {
-  name: "Site Settings",
-  icon: duotone.SiteSetting,
-  path: "/vendor/site-settings"
+  path: "/dashboard/account-settings"
 }, {
   name: "Logout",
   icon: duotone.Session,

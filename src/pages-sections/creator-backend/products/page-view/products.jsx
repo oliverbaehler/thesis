@@ -36,6 +36,10 @@ const tableHeading = [{
   id: "qr-code",
   label: "QR Code",
   align: "left"
+}, {
+  id: "published",
+  label: "Published",
+  align: "left"
 },
 {
   id: "action",
@@ -62,7 +66,6 @@ export default function ProductsPageView({}) {
         }));
 
         setProductList(products);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching products from Firestore:", error);
       }
@@ -80,7 +83,7 @@ export default function ProductsPageView({}) {
     published: item.published,
     qrCodeImage: item.qr_code
   }));
-  console.log('Products:', filteredProducts);
+
   const {
     order,
     orderBy,
@@ -104,7 +107,7 @@ export default function ProductsPageView({}) {
               <TableHeader order={order} hideSelectBtn orderBy={orderBy} heading={tableHeading} rowCount={productList.length} numSelected={selected.length} onRequestSort={handleRequestSort} />
 
               <TableBody>
-                {filteredList.map((product, index) => <ProductRow key={index} product={product} />)}
+                {filteredList.map((product, index) => <ProductRow key={index} product={product}/>)}
               </TableBody>
             </Table>
           </TableContainer>

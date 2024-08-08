@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import Box from "@mui/material/Box";
 import Badge from "@mui/material/Badge";
 import Drawer from "@mui/material/Drawer";
+import PersonOutline from "@mui/icons-material/PersonOutline"; 
 import IconButton from "@mui/material/IconButton"; 
 // MUI ICON COMPONENT
 
@@ -15,18 +16,21 @@ import Icon from "icons";
 import DialogDrawer from "./dialog-drawer"; 
 // GLOBAL CUSTOM COMPONENTS
 
+import { useRouter } from "next/navigation";
+import { useAuth } from "contexts/SessionContext";
 import Image from "components/BazaarImage";
 import { Paragraph } from "components/Typography";
 import { MobileMenu } from "components/navbar/mobile-menu";
 import { FlexBetween, FlexBox } from "components/flex-box"; 
-import { useRouter } from 'next/navigation';
-
-// GLOBAL CUSTOM HOOK
+import LoginIcon from '@mui/icons-material/Login';
 
 import useHeader from "../hooks/use-header";
+
+import { CustomButton, ToggleWrapper } from "./styles";
+
 export default function MobileHeader() {
   const router = useRouter();
-
+  const { user } = useAuth();
   const {
     dialogOpen,
     sidenavOpen,
@@ -35,6 +39,7 @@ export default function MobileHeader() {
     toggleSearchBar,
     toggleSidenav
   } = useHeader();
+
   const ICON_STYLE = {
     color: "grey.600",
     fontSize: 20
@@ -45,7 +50,7 @@ export default function MobileHeader() {
   };
 
   const handleUser = () => {
-    router.push('/dashboard/user-settings');
+    router.push("/dashboard/account-settings");
   };  
 
   return <Fragment>
@@ -56,7 +61,7 @@ export default function MobileHeader() {
         </Box>
 
         <Link href="/">
-          <Image height={44} src="/assets/images/brand/black.png" alt="logo" />
+          <Image height={44} src="/assets/images/brand/black.svg" alt="logo" />
         </Link>
 
         <FlexBox justifyContent="end" flex={1}>
@@ -69,7 +74,7 @@ export default function MobileHeader() {
            {user.photoURL ? (
             <Avatar alt="User Avatar" src={user.photoURL} />
            ) : (
-            <PersonOutline sx={{ ...ICON_COLOR, color: "gray" }} />
+            <PersonOutline sx={{ ...ICON_STYLE, color: "gray" }} />
            )}
           </IconButton>
         </>

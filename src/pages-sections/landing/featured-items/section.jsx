@@ -6,11 +6,9 @@ import Container from "@mui/material/Container";
 import Heading from "../shared/heading"; 
 
 import { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where, orderBy, limit  } from "firebase/firestore";
 import { db } from "firebaseConfig";
 import { useAuth } from "contexts/SessionContext";
-
-
 
 import ProductCard from "components/product-card/"; 
 
@@ -22,7 +20,14 @@ export default function Section11() {
     const fetchProducts = async () => {
       try {
         // Fetch all products from Firestore
-        const querySnapshot = await getDocs(collection(db, "products"));
+        const productsRef = collection(db, "products");
+        const q = query(
+          productsRef,
+          where("published", "==", true),
+          limit(6)
+        );
+        const querySnapshot = await getDocs(q);
+
         const allProducts = querySnapshot.docs.map(doc => {
         const data = doc.data();
         return {
@@ -37,16 +42,7 @@ export default function Section11() {
             };
         });
 
-        console.log('All Products:', allProducts);
-        // Filter products to include only those with imageUrls set and published is true
-        const filteredProducts = allProducts.filter(
-          product => product.thumbnail && product.published === true
-        );
-        console.log('Filtered Products:', filteredProducts);
-        const selectedProducts = filteredProducts.slice(0, 6);
-        console.log('Selected Products:', selectedProducts);
-
-        setProducts(selectedProducts);
+        setProducts(allProducts);
       } catch (error) {
         console.error("Error fetching products from Firestore:", error);
       }

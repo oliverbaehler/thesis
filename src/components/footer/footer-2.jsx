@@ -27,7 +27,7 @@ export default function Footer2() {
     }
   }}>
       <Grid container spacing={6}>
-        <Grid item sm={6} xs={12}>
+        <Grid item sm={12} xs={12}>
           <Link href="/">
             <BazaarImage mb={2.5} src="/assets/images/brand/black.png" alt="logo" />
           </Link>
@@ -36,25 +36,6 @@ export default function Footer2() {
             <strong>Note</strong>: This is a demo website. The products are not for sale nor is this data production-ready. Currently only at prototype stage 
           </Paragraph>
           <AppStore />
-        </Grid>
-
-        <Grid item sm={6} xs={12}>
-          {
-          /* CUSTOMER CARE LINKS */
-        }
-          <Box mb={2} mt={{
-          md: 6,
-          xs: 2
-        }}>
-            {CUSTOMER_CARE_LINKS.map((item, ind) => <StyledLink href="/" key={ind}>
-                {item}
-              </StyledLink>)}
-          </Box>
-
-          {
-          /* SOCIAL LINKS WITH ICON */
-        }
-          <SocialLinks />
         </Grid>
       </Grid>
     </StyledFooter>;

@@ -1,16 +1,8 @@
 
 import { adminDb } from 'firebaseAdmin';
-
 import { ProductDetailsPageView } from "pages-sections/product-details/page-view"; 
-
 export const metadata = {
-  title: "Product Details - Bazaar Next.js E-commerce Template",
-  description: `Bazaar is a React Next.js E-commerce template. Build SEO friendly Online store, delivery app and Multi vendor store`,
-  authors: [{
-    name: "UI-LIB",
-    url: "https://ui-lib.com"
-  }],
-  keywords: ["e-commerce", "e-commerce template", "next.js", "react"]
+  title: "Product Details",
 };
 
 
@@ -20,10 +12,10 @@ export async function fetchProductAndRelated(slug) {
   }
 
   try {
-    const docRef = adminDb.collection('products').doc(slug);
+    const docRef = adminDb.collection('collections').doc(slug);
     const docSnapshot = await docRef.get();
 
-    if (docSnapshot.exists) {
+    if (docSnapshot.exists && docSnapshot.data().published) {
       const productData = docSnapshot.data();
       const product = {
         id: docSnapshot.id,
@@ -65,8 +57,5 @@ export default async function ProductDetails({ params }) {
   const { slug } = params;
 
   const { product, relatedProducts } = await fetchProductAndRelated(slug);
-
-  console.log('Product:', product);
-
   return <ProductDetailsPageView product={product} relatedProducts={relatedProducts} />;
 }

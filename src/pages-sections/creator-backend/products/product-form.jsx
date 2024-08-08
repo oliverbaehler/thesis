@@ -17,8 +17,8 @@ import { Formik } from "formik";
 import * as yup from "yup"; 
 import { v4 as uuidv4 } from "uuid";
 import { db, storage } from "firebaseConfig";
-import { collection, doc, setDoc, updateDoc, getDocs, getDoc, query, where } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL, getMetadata, uploadString, deleteObject } from "firebase/storage";
+import { collection, doc, setDoc, getDocs, getDoc, query, where } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL, uploadString, deleteObject } from "firebase/storage";
 import { useAuth } from "contexts/SessionContext";
 import DropZone from "components/DropZone";
 import { FlexBox } from "components/flex-box"; 
@@ -40,7 +40,7 @@ export default function ProductForm({ initialData, productId }) {
   const { user } = useAuth();
   const [files, setFiles] = useState([]);
   const [thumbnail, setThumbnail] = useState("");
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(initialData?.content);
   const [collections, setCollections] = useState([]);
   
   useEffect(() => {
@@ -69,11 +69,8 @@ export default function ProductForm({ initialData, productId }) {
     thumbnail: "",
   };
 
-  console.log('Initial Values:', INITIAL_VALUES);
-
   useEffect(() => {
     if (initialData) {
-      setContent(initialData.content || "");
       let filesArray = [];
       // If a thumbnail is set, add it first
       if (initialData.thumbnail) {
@@ -132,32 +129,17 @@ export default function ProductForm({ initialData, productId }) {
 
   const generateQRCode = async (productId, userId) => {
     try {
-
-      const qrCodeDocRef = doc(db, "qr-codes", productId);
-      const qrCodeDocSnap = await getDoc(qrCodeDocRef);
-      if (!qrCodeDocSnap.exists()) {
-        // Generate the QR code data URL
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-        const url = `${baseUrl}/codes/${productId}`;
-        const qrCodeDataUrl = await QRCode.toDataURL(url);
-    
-        const storageRef = ref(storage, `${userId}/products/${productId}/${productId}-code.png`);
-        await uploadString(storageRef, qrCodeDataUrl, 'data_url');
-        const downloadURL = await getDownloadURL(storageRef);
-        console.log('QR code generated and saved:', downloadURL);
-        
-        // Save QR code URL to Firestore
-        const docRef = doc(db, "scans", productId);
-        await setDoc(docRef, {
-          redirectTo: `/products/${productId}`,
-          trackingObject: productId,
-          createdBy: userId,
-        });
-        
-        return downloadURL;
-      }
-
-
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+      const url = `${baseUrl}/collections/${productId}`;
+      const qrCodeDataUrl = await QRCode.toDataURL(url);
+      
+      const storagePath = `${userId}/products/${productId}/${productId}-code.png`;
+      const storageRef = ref(storage, storagePath);
+  
+      await uploadString(storageRef, qrCodeDataUrl, 'data_url');
+      const downloadURL = await getDownloadURL(storageRef);
+      
+      return downloadURL;
     } catch (error) {
       console.error('Error generating QR code:', error);
     }
@@ -215,13 +197,13 @@ export default function ProductForm({ initialData, productId }) {
       } catch (error) {
         console.error(`Error deleting file ${file.name} from storage:`, error);
       }
-      const filteredFiles = files.filter(item => item.name !== file.name);
-      if (filteredFiles.length > 0 && file.preview === thumbnail) {
-        setThumbnail(filteredFiles[0].preview);
-      }
-  
-      setFiles(filteredFiles);
     }
+    const filteredFiles = files.filter(item => item.name !== file.name);
+    if (filteredFiles.length > 0 && file.preview === thumbnail) {
+      setThumbnail(filteredFiles[0].preview);
+    }
+
+    setFiles(filteredFiles);
   };
 
 

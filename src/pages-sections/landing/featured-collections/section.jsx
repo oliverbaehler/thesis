@@ -1,6 +1,14 @@
+"use client";
+
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container"; 
 // STYLED COMPONENTS
+
+import { useEffect, useState } from "react";
+import { collection, getDocs, query, where, orderBy, limit  } from "firebase/firestore";
+import { db } from "firebaseConfig";
+import { useAuth } from "contexts/SessionContext";
+
 
 import Heading from "../shared/heading"; 
 
@@ -10,58 +18,65 @@ import Card3 from "./components/card-3";
 import Card4 from "./components/card-4";
 import Card5 from "./components/card-5";
 import Card6 from "./components/card-6";
+
+
 export default function Section1() {
+  const [collections, setCollections] = useState([]);
+  useEffect(() => {
+    const fetchcollections = async () => {
+      try {
+        const collectionsRef = collection(db, "collections");
+        const q = query(
+          collectionsRef,
+          where("published", "==", true),
+          limit(6)
+        );
+        const querySnapshot = await getDocs(q);
+
+        const allcollections = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+              id: doc.id,
+              name: data.name,
+              images: data.imageUrls,
+              published: data.published,
+              thumbnail: data.thumbnail
+            };
+        });
+
+        setCollections(allcollections);
+      } catch (error) {
+        console.error("Error fetching collections from Firestore:", error);
+      }
+    };
+
+    fetchcollections();
+  }, []);
+
+  console.log("Collections", collections)
   return <Container>
-      <Heading title="Featured Items" />
+      <Heading title="Trending Collections" />
       <Grid container spacing={3}>
-        {
-        /* MEN'S COLLECTION BANNER SECTION */
-      }
-        <Grid item md={6} xs={12}>
-          <Card1 />
-        </Grid>
-
-        <Grid item container md={6} xs={12} spacing={3}>
-          {
-          /* NEW SPORT BANNER SECTION */
-        }
-          <Grid item sm={6} xs={12}>
-            <Card2 />
-          </Grid>
-
-          {
-          /* WOMEN BANNER SECTION */
-        }
-          <Grid item sm={6} xs={12}>
-            <Card3 />
-          </Grid>
-        </Grid>
-
-        {
-        /* 2ND ROW  */
-      }
-        <Grid item container md={6} xs={12} spacing={3}>
-          {
-          /* 50% OFF BANNER SECTION */
-        }
-          <Grid item sm={6} xs={12}>
-            <Card4 />
-          </Grid>
-
-          {
-          /* COUPON BANNER SECTION */
-        }
-          <Grid item sm={6} xs={12}>
-            <Card5 />
-          </Grid>
-        </Grid>
-
-        {
-        /* NEW GADGET BANNER SECTION */
-      }
-        <Grid item md={6} xs={12}>
-          <Card6 />
-        </Grid>
+        {collections[0] && (
+          <Grid item md={6} xs={12}>
+            <Card1 color="#FFA954" product={collections[0]} />
+           </Grid>
+        )}
+        {collections[1] && (
+          <Grid item md={6} xs={12}>
+            <Card1 color="#FFA954" product={collections[1]} />
+           </Grid>
+        )}
+        {collections[2] && (
+          <Grid item md={6} xs={12}>
+            <Card1 color="#FFA954" product={collections[2]} />
+           </Grid>
+        )}
+        {collections[3] && (
+          <Grid item md={6} xs={12}>
+            <Card1 color="#FFA954" product={collections[3]} />
+           </Grid>
+        )}
       </Grid>
     </Container>;
 }

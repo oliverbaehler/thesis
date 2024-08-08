@@ -13,7 +13,7 @@ Documentation for the architecture of this project is released in a dedicated do
 
 Pariah is Open Source with Apache 2 license and any contribution is welcome. Read more about how to contribute in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
-## Development
+## How to run
 
 This project is built with Firebase and uses Firestore as a database. To get started, you need to have a Firebase project set up and the Firebase CLI installed on your computer. See the following instructions to set up your development environment.
 
@@ -58,6 +58,18 @@ const nextConfig = {
   }
 };
 ```
+
+If you see older versions of the emulator, you can clear the cash. The only implication of this, is that deployments are slower (because this directory is used to cache the emulator images). But it's safe to remove:
+
+```bash
+rm -rf .firebase
+```
+
+## Admin SDK
+
+
+applicationDefault()
+
 
 ### Structure
 

@@ -18,11 +18,5 @@ export default function LeftContent() {
       <ToggleWrapper onClick={handleOpenMobileSidebar}>
         <Toggle />
       </ToggleWrapper>
-
-      <CustomButton LinkComponent={Link} href="/" startIcon={<Globe sx={{
-      color: "grey.900"
-    }} />}>
-        Browse Website
-      </CustomButton>
     </Fragment>;
 }

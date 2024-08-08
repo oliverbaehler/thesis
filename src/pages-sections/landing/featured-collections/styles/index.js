@@ -21,18 +21,37 @@ const CommonWrapper = styled(CommonDiv)({
 // ==============================================================
 
 // CARD 1 STYLED COMPONENT
-
-export const Card1Wrapper = styled(CommonDiv)(({
-  theme
-}) => ({
+export const Card1Wrapper = styled(CommonDiv)(({ theme }) => ({
   backgroundColor: "#FFA954",
+  borderRadius: "12px", // Rounded corners
+  overflow: "hidden", // Ensure content stays within rounded corners
+  transition: "transform 0.3s ease, box-shadow 0.3s ease", // Smooth transitions
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
+  height: "400px", // Increase the height of the card
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center", // Center content vertically
+  position: "relative", // Ensure the background gradient is positioned correctly
+
+  "&:hover": {
+    transform: "translateY(-5px)", // Lift effect on hover
+    boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)", // Stronger shadow on hover
+  },
+
   img: {
     position: "relative",
-    zIndex: 1
+    zIndex: 1,
+    width: "100%", // Ensure the image takes full width
+    height: "auto", // Maintain aspect ratio
   },
+
   ".content": {
     color: "white",
     position: "relative",
+    padding: "20px", // Increase padding for better content spacing
+    textAlign: "left", // Ensure text is aligned to the left
+    zIndex: 2, // Ensure the content is above the gradient
+
     "::before": {
       top: 35,
       width: 180,
@@ -40,28 +59,29 @@ export const Card1Wrapper = styled(CommonDiv)(({
       left: "-70%",
       content: "''",
       position: "absolute",
-      background: `linear-gradient(270deg, #FFA954 0%, #FFC185 0.01%, rgba(255, 169, 84, 0.00) 100%)`,
+      zIndex: 0, // Make sure the gradient is behind the content
       [theme.breakpoints.down("lg")]: {
         left: "-82%",
         top: 30,
-        height: 70
+        height: 70,
       },
       [theme.breakpoints.up("xl")]: {
         left: "-60%",
-        height: 90
+        height: 90,
       },
       [theme.breakpoints.down(575)]: {
-        display: "none"
-      }
-    }
+        display: "none",
+      },
+    },
   },
+
   [theme.breakpoints.down(575)]: {
     padding: "2rem",
     img: {
-      display: "none"
-    }
-  }
-})); 
+      display: "none",
+    },
+  },
+}));
 // CARD 2 STYLED COMPONENT
 
 export const Card2Wrapper = styled(CommonWrapper)(({

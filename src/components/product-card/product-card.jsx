@@ -65,7 +65,8 @@ export default function ProductCard({
       <ProductViewDialog openDialog={openModal} handleCloseDialog={toggleDialog} product={{
       id,
       name,
-      images
+      images,
+      description
     }} />
 
       <Box p={1} textAlign="center">

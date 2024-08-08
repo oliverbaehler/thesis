@@ -18,7 +18,7 @@ export default function LoginCartButtons({
   };
 
   const handleRedirect = () => {
-    router.push("/dashboard/settings");
+    router.push("/dashboard/account-settings");
   };
 
   return <div>

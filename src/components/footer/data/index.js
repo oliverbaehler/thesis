@@ -7,7 +7,7 @@ import Facebook from "icons/Facebook";
 import Instagram from "icons/Instagram";
 import PlayStore from "icons/PlayStore";
 import AppleStore from "icons/AppleStore";
-export const ABOUT_LINKS = ["Careers", "Our Stores", "Our Cares", "Terms & Conditions", "Privacy Policy"];
+export const ABOUT_LINKS = [ "Terms & Conditions", "Privacy Policy"];
 export const CUSTOMER_CARE_LINKS = ["Help Center", "Track Your Order", "Corporate & Bulk Purchasing", "Returns & Refunds"];
 export const SOCIAL_ICON_LINKS = [{
   Icon: Facebook,

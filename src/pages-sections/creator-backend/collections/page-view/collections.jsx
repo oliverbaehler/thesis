@@ -15,16 +15,37 @@ import { TableHeader, TablePagination } from "components/data-table";
 
 import useMuiTable from "hooks/useMuiTable";
 
-import BrandRow from "../collection-row";
+import CollectionRow from "../collection-row";
 import SearchArea from "../../search-box";
 import PageWrapper from "../../page-wrapper";
 
 // TABLE HEAD COLUMN DATA
-import { tableHeading } from "../table-heading";
+const tableHeading = [{
+  id: "name",
+  label: "Name",
+  align: "left"
+}, {
+  id: "qr-code",
+  label: "QR Code",
+  align: "left"
+},  {
+  id: "likes",
+  label: "Likes",
+  align: "left"
+},  {
+  id: "published",
+  label: "Published",
+  align: "left"
+},{ 
+  id: "action",
+  label: "Action",
+  align: "right"
+}]; 
 
 export default function CollectionsPageView({}) {
   const { user } = useAuth(); // Get the current user from context
   const [collections, setCollections] = useState([]);
+  
 
   useEffect(() => {
     if (!user) return;
@@ -49,12 +70,14 @@ export default function CollectionsPageView({}) {
     fetchCollections();
   }, [user]);
 
+
   const filteredCollections = collections.map(item => ({
     id: item.id,
-    slug: item.slug,
     name: item.name,
-    logo: item.image,
-    featured: item.featured
+    image: item.thumbnail,
+    likes: item.likes || 0,
+    published: item.published,
+    qrCodeImage: item.qr_code
   }));
 
   const {
@@ -93,8 +116,8 @@ export default function CollectionsPageView({}) {
                 onRequestSort={handleRequestSort}
               />
               <TableBody>
-                {filteredList.map(brand => (
-                  <BrandRow key={brand.id} brand={brand} selected={selected} />
+                {filteredList.map(collection => (
+                  <CollectionRow key={collection.id} collection={collection} />
                 ))}
               </TableBody>
             </Table>
