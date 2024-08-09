@@ -13,7 +13,6 @@ export const SessionProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log('User authenticated:', user);
         setUser({
           uid: user.uid,
           email: user.email,

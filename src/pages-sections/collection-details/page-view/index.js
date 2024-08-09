@@ -1,1 +1,1 @@
-export { default as CollectionDetailsPageView } from "./product-details";
+export { default as CollectionDetailsPageView } from "./collection-details";

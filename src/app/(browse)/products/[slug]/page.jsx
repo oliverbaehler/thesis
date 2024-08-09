@@ -30,6 +30,7 @@ export async function fetchProductAndRelated(slug) {
       // Fetch related products
       const relatedProductsSnapshot = await adminDb.collection('products')
         .where("collectionId", "==", product.collectionId)
+        .where("published", "==", true)
         .get();
 
       const relatedProducts = relatedProductsSnapshot.docs.map(doc => ({

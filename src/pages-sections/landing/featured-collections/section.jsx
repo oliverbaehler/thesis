@@ -40,7 +40,9 @@ export default function Section1() {
               name: data.name,
               images: data.imageUrls,
               published: data.published,
-              thumbnail: data.thumbnail
+              thumbnail: data.thumbnail,
+              createdBy: data.createdBy,
+              createdByName: data.createdByName,
             };
         });
 

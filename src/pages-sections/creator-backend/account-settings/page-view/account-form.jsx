@@ -14,7 +14,7 @@ import { Formik } from "formik";
 import * as yup from "yup"; 
 import Typography from '@mui/material/Typography';
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db, storage } from "firebaseConfig"; 
 
 import { Editor } from "components/editor"; 
@@ -34,14 +34,14 @@ export default function AccountSettingsPageView({initialData, user}) {
   console.log("user", user);
   const INITIAL_VALUES = initialData || {
     content: "",
-    creator_name: user.displayName || ""
+    displayName: ""
   };
 
   const handleFormSubmit = async (values, { resetForm }) => {
     try {
       const docRef = doc(db, "users", user.uid);
-      await setDoc(docRef, {
-        creator_name: values.creator_name,
+      await updateDoc(docRef, {
+        displayName: values.displayName,
         content: content || "",
       });
 
@@ -85,7 +85,7 @@ export default function AccountSettingsPageView({initialData, user}) {
 
               <Grid container spacing={3}>
                 <Grid item md={6} xs={12}>
-                  <TextField fullWidth color="info" size="medium" name="creator_name" label="Creator Name" onBlur={handleBlur} onChange={handleChange} value={values.creator_name} error={!!touched.creator_name && !!errors.creator_name} helperText={touched.creator_name && errors.creator_name} />
+                  <TextField fullWidth color="info" size="medium" name="displayName" label="Creator Name" onBlur={handleBlur} onChange={handleChange} value={values.displayName} error={!!touched.displayName && !!errors.displayName} helperText={touched.displayName && errors.displayName} />
                 </Grid>
 
                 <Grid item md={6} xs={12}>

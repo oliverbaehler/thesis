@@ -24,11 +24,34 @@ Before you get started, make sure you have the following software installed on y
 - [Node.js](https://nodejs.org/en/download/)
 - Firebase CLI: `npm install -g firebase-tools firebase`
 
+If you have never worked with firebase, here's some good starting points: 
+
+- [Get started with Firebase](https://firebase.google.com/docs/web/setup)
+- [React Tutorial](https://blog.logrocket.com/firebase-cloud-storage-firebase-v9-react/)
+
 ### Firebase Emulators
 
-Before running the emulators, we need to render the function config:
+To run with firebase emulators, first setup the firebase project. When setting up hosting on firebase, you get the relevant information to create a `.env.local` file in the root of the repository (it's part of `.gitignore`, don't worry about commiting it). 
 
-firebase functions:config:get > functions/.runtimeconfig.json
+Set up [Authentication with Google]() and find the relevant SDK secrets.
+
+Your `.env.local` should look something like this:
+
+```
+GOOGLE_CLIENT_ID=<env-from-authentication>
+GOOGLE_CLIENT_SECRET=<env-from-authentication>
+
+// Relevant for QR Code generation
+NEXT_PUBLIC_BASE_URL=http://localhost:5003
+
+
+NEXT_PUBLIC_FIREBASE_API_KEY=<env-from-hosting>
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=<env-from-hosting>
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=<env-from-hosting>
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=<env-from-hosting>
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=<env-from-hosting>
+NEXT_PUBLIC_FIREBASE_APP_ID="<env-from-hosting>"
+```
 
 YOu can start up the emulator suite by running the following command:
 
@@ -64,12 +87,6 @@ If you see older versions of the emulator, you can clear the cash. The only impl
 ```bash
 rm -rf .firebase
 ```
-
-## Admin SDK
-
-
-applicationDefault()
-
 
 ### Structure
 

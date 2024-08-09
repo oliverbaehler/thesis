@@ -55,6 +55,6 @@ export default function EditCollectionPageView() {
 
 
   return <PageWrapper title="Edit Collection">
-      <CollectionForm initialData={collectionData} productId={slug} />
+      <CollectionForm initialData={collectionData} collectionId={slug} />
     </PageWrapper>;
 }

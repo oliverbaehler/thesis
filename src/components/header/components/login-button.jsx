@@ -2,6 +2,10 @@ import IconButton from "@mui/material/IconButton";
 import PersonOutline from "@mui/icons-material/PersonOutline"; 
 import { useRouter } from "next/navigation";
 import { useAuth } from "contexts/SessionContext";
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+
+
 
 import Globe from "icons/Globe";
 import LoginIcon from '@mui/icons-material/Login';

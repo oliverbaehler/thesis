@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import Rating from "@mui/material/Rating"; 
+import Rating from "@mui/material/Rating";
+import { Box } from "@mui/material"; 
+import Grid from "@mui/material/Grid";
 // LOCAL CUSTOM COMPONENTS
 
 import ProductPrice from "./components/product-price";
@@ -18,21 +20,35 @@ import { FlexBetween } from "components/flex-box";
 
 // ========================================================
 export default function ProductCard2({
-  slug,
+  id,
   title,
-  price,
   imgUrl,
-  rating,
+  type,
   off = 20,
   hideReview,
   hideFavoriteIcon
 }) {
   const [favorite, setFavorite] = useState(false);
-  return <div>
-      <Link href={`/products/${slug}`}>
-        <HoverBox overflow="hidden" borderRadius={2}>
-          <LazyImage width={270} height={270} alt={title} src={imgUrl} />
-        </HoverBox>
+  return  <Grid item lg={4} md={6} sm={6} xs={12}>
+           <Link href={`/${type}/${id}`}>
+           <HoverBox
+             sx={{
+               width: 270, // Set a fixed width
+               height: 270, // Set a fixed height
+               overflow: "hidden",
+               borderRadius: 2,
+               display: "flex",
+               justifyContent: "center",
+               alignItems: "center",
+               backgroundColor: "#f0f0f0", // Optional: background color when image is smaller
+               "&:hover": {
+                 // Optional: Add hover effect here
+                 boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+               },
+             }}
+           >
+            <LazyImage width={270} height={270} alt={title} src={imgUrl} />
+           </HoverBox>
       </Link>
 
       <FlexBetween mt={2}>
@@ -40,13 +56,7 @@ export default function ProductCard2({
           <H6 mb={0.5} title={title} ellipsis>
             {title}
           </H6>
-
-          {!hideReview ? <Rating size="small" value={rating} color="warn" readOnly /> : null}
-
-          <ProductPrice price={price} off={off} />
         </div>
-
-        {!hideFavoriteIcon ? <FavoriteButton isFavorite={favorite} handleClick={() => setFavorite(state => !state)} /> : null}
       </FlexBetween>
-    </div>;
+      </Grid>;
 }

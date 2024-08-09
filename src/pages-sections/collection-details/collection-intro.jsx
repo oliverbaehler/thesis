@@ -13,17 +13,16 @@ import Button from "@mui/material/Button";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
-
-import ProductDescription from "./product-description";
 import LazyImage from "components/LazyImage";
 import { H1, H2, H3, H6 } from "components/Typography";
 import { FlexBox, FlexRowCenter } from "components/flex-box";  
 
 import { db } from "firebaseConfig";
-import { doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+
 
 // ================================================================
-export default function collectionIntro({
+export default function CollectionIntro({
   collection
 }) {
   const {
@@ -34,42 +33,38 @@ export default function collectionIntro({
     thumbnail,
     createdBy,
     creatorName,
+    userLikes = []
   } = collection || {};
 
   const { user } = useAuth();
   const allImages = [thumbnail, ...images].filter(Boolean);
   const [selectedImage, setSelectedImage] = useState(0);
-
-
   const [isLiked, setIsLiked] = useState(false);
 
   // Fetch if the user has liked the collection
   useEffect(() => {
-    const fetchLikeStatus = async () => {
-      const likeDocRef = doc(db, "likes", `${user.uid}_${id}`);
-      const likeDoc = await getDoc(likeDocRef);
-      setIsLiked(likeDoc.exists());
-    };
-
-    if (user && id) {
-      fetchLikeStatus();
+    if (user && userLikes.includes(user.uid)) {
+      setIsLiked(true);
     }
-  }, [user, id]);
+  }, [user, userLikes]);
 
   const handleLikeToggle = async () => {
-    const likeDocRef = doc(db, "likes", `${user.uid}_${id}`);
+    const collectionDocRef = doc(db, "collections", id);
 
     if (isLiked) {
       // Remove the like
-      await deleteDoc(likeDocRef);
+      await updateDoc(collectionDocRef, {
+        userLikes: arrayRemove(user.uid)
+      });
     } else {
       // Add the like
-      await setDoc(likeDocRef, { userId: user.uid, collectionId: id });
+      await updateDoc(collectionDocRef, {
+        userLikes: arrayUnion(user.uid)
+      });
     }
 
     setIsLiked(!isLiked);
   };
-
 
   const handleImageClick = ind => () => setSelectedImage(ind); 
 
@@ -94,42 +89,31 @@ export default function collectionIntro({
               </FlexRowCenter>)}
           </FlexBox>
         </Grid>
-        {
-        /* collection INFO AREA */
-      }
+
         <Grid item md={6} xs={12} alignItems="center">
-          {
-          /* collection NAME */
-        }
-          <H1 mb={1}>{name}</H1>
-
-          {
-          /* collection BRAND */
-        }
-          <Link href={`/profile/${createdBy}`} passHref>
-            <FlexBox alignItems="center" mb={1} sx={{ cursor: 'pointer', textDecoration: 'none' }}>
-              <Avatar
-                alt={creatorName}
-                src={`/storage/${createdBy}/profile.png`}
-                sx={{ width: 32, height: 32, mr: 1 }}
-              />
-              <H6>{creatorName}</H6>
-            </FlexBox>
-          </Link>
-
-          <FlexBox alignItems="center" gap={1} mb={2}>
+          <FlexBox justifyContent="space-between" alignItems="center" mb={2}>
+            <Link href={`/profile/${createdBy}`} passHref>
+              <FlexBox alignItems="center" sx={{ cursor: 'pointer', textDecoration: 'none' }}>
+                <H1>{name}</H1>
+              </FlexBox>
+            </Link>
             <Button
               onClick={handleLikeToggle}
+              variant="contained"
+              startIcon={isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+              sx={{ marginLeft: "auto" }}
             >
-              {isLiked ? <FavoriteIcon text="Like"/> : <FavoriteBorderIcon />}
+              {isLiked ? "Liked" : "Like"}
             </Button>
-
           </FlexBox>
 
-          <FlexBox alignItems="center" gap={1} mb={2}>
-            <ProductDescription description={collection.description}/>
-          </FlexBox>
+          <Link href={`/creator/${createdBy}`} passHref>
+            <FlexBox alignItems="center" mb={1} sx={{ cursor: 'pointer', textDecoration: 'none' }}>
+              <H6>Created by {creatorName}</H6>
+            </FlexBox>
+          </Link>
         </Grid>
+
       </Grid>
     </Box>;
 }

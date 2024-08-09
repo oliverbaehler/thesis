@@ -4,7 +4,7 @@ import Avatar from "@mui/material/Avatar";
 import Image from 'next/image' 
 // MUI ICON COMPONENTS
 
-import Link from '@mui/material/Link';
+import Link from "next/link";
 import QrCodeIcon from '@mui/icons-material/QrCode';
 import Edit from "@mui/icons-material/Edit";
 import Delete from "@mui/icons-material/Delete";
@@ -154,7 +154,7 @@ export default function CollectionRow({
   </StyledTableCell>
 
   <StyledTableCell align="left">
-        <BazaarSwitch color="info" checked={published} onChange={handleTogglePublish} />
+        <BazaarSwitch color="info" checked={cpublished} onChange={handleTogglePublish} />
    </StyledTableCell>
 
   <StyledTableCell align="right">

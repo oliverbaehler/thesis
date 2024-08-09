@@ -32,7 +32,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 // FORM VALIDATION SCHEMA
 const VALIDATION_SCHEMA = yup.object().shape({
   name: yup.string().required("Name is required!"),
-  collectionId: yup.string().required("Collection is required!"),
+  productId: yup.string().required("Collection is required!"),
 });
 
 export default function ProductForm({ initialData, productId }) {
@@ -63,7 +63,7 @@ export default function ProductForm({ initialData, productId }) {
   const INITIAL_VALUES = initialData || {
     name: "",
     description: "",
-    collectionId: "",
+    productId: "",
     published: true,
     content: "",
     thumbnail: "",
@@ -71,38 +71,34 @@ export default function ProductForm({ initialData, productId }) {
 
   useEffect(() => {
     if (initialData) {
-      let filesArray = [];
-      // If a thumbnail is set, add it first
+      const filesArray = initialData.imageUrls.map(url => ({
+        preview: url,
+        name: url.split('/').pop(),
+      }));
       if (initialData.thumbnail) {
-        filesArray.push({
+        filesArray.unshift({
           preview: initialData.thumbnail,
           name: initialData.thumbnail.split('/').pop(),
         });
-        setThumbnail(initialData.thumbnail);
       }
-      filesArray = filesArray.concat(initialData.imageUrls.map(url => ({
-        preview: url,
-        name: url.split('/').pop(),
-      })));
-    
       setFiles(filesArray);
     }
   }, [initialData]);
 
-
   const handleFormSubmit = async (values, { resetForm }) => {
-    if (!user) {
-      return;
-    }
+    const userDocRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userDocRef);
+    const userData = userDoc.data();
 
     try {
       if (!productId) {
         productId = uuidv4();
       }
       const docRef = doc(db, "products", productId);
-      const uploadedImageUrls = await uploadFiles(files, productId, user.uid);
-      const [thumbnail, ...imageUrls] = uploadedImageUrls;
 
+      const thumbnailFile = files[0];
+      const thumbnailUrl = await uploadFile(thumbnailFile, productId, user.uid);
+      const uploadedImageUrls = await uploadFiles(files.slice(1), productId, user.uid);
       const qr_code_url = await generateQRCode(productId, user.uid);
 
       await setDoc(docRef, {
@@ -110,12 +106,12 @@ export default function ProductForm({ initialData, productId }) {
         name: values.name,
         content: content || "",
         published: values.published,
-        collectionName: collections.find(collection => collection.id === values.collectionId).name,
-        collectionId: values.collectionId, // Store the collectionId as an attribute
-        thumbnail: thumbnail,
-        imageUrls: imageUrls,
+        collectionName: collections.find(collection => collection.id === values.productId).name,
+        productId: values.productId, // Store the productId as an attribute
+        thumbnail: thumbnailUrl,
+        imageUrls: uploadedImageUrls,
         createdBy: user.uid,
-        createdByName: user.displayName,
+        createdByName: userData.displayName,
         createdAt: new Date(),
         qr_code: qr_code_url || "",
       });
@@ -145,31 +141,21 @@ export default function ProductForm({ initialData, productId }) {
     }
   };
 
-
-
   const uploadFiles = async (files, productId, userId) => {
-    let imageUrls = [];
-    
-    for (const file of files) {
-      const downloadURL = await uploadFile(file, productId, userId);
-      if (downloadURL) {
-        imageUrls.push(downloadURL);
-      }
-    }
-  
-    return imageUrls;
+    return Promise.all(files.map(file => uploadFile(file, productId, userId)));
   };
-  
+
   const uploadFile = async (file, productId, userId) => {
     const storageRef = ref(storage, `${userId}/products/${productId}/${file.name}`);
-    
     try {
-      const snapshot = await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(snapshot.ref);
-      return downloadURL;
+      const existingDownloadURL = await getDownloadURL(storageRef);
+      return existingDownloadURL;
     } catch (error) {
-      console.log("Error uploading file:", error.code);
-      return null;
+      if (error.code == "storage/object-not-found") {
+        const snapshot = await uploadBytes(storageRef, file);
+        return await getDownloadURL(snapshot.ref);
+      } 
+      throw error;
     }
   };
   
@@ -212,9 +198,15 @@ export default function ProductForm({ initialData, productId }) {
       const newFiles = [...files];
       const [movedFile] = newFiles.splice(index, 1);
       newFiles.splice(index + direction, 0, movedFile);
+      
+      if (index + direction === 0) {
+        setThumbnail(movedFile.preview);
+      }
+  
       return newFiles;
     });
   };
+
 
   return (
     <Card className="p-3">
@@ -260,8 +252,8 @@ export default function ProductForm({ initialData, productId }) {
                   <Select
                     labelId="collection-select-label"
                     id="collection-select"
-                    name="collectionId"
-                    value={values.collectionId}
+                    name="productId"
+                    value={values.productId}
                     label="Collection"
                     onChange={handleChange}
                   >
@@ -271,9 +263,9 @@ export default function ProductForm({ initialData, productId }) {
                       </MenuItem>
                     ))}
                   </Select>
-                  {touched.collectionId && errors.collectionId && (
+                  {touched.productId && errors.productId && (
                     <div style={{ color: "red", marginTop: "0.5rem" }}>
-                      {errors.collectionId}
+                      {errors.productId}
                     </div>
                   )}
                 </FormControl>

@@ -32,12 +32,12 @@ exports.updateItemsOnUserChange = functions.firestore
     const afterData = change.after.data();
     const userId = context.params.userId;
 
-    if (beforeData.creator_name === afterData.creator_name) {
-      console.log('creator_name did not change');
+    if (beforeData.displayName === afterData.displayName) {
+      console.log('displayName did not change');
       return null;
     }
 
-    const newCreatorName = afterData.creator_name;
+    const newCreatorName = afterData.displayName;
 
     // Update Collections
     const collectionsRef = db.collection('collections');
@@ -67,7 +67,7 @@ exports.updateItemsOnUserChange = functions.firestore
 
     snapshot.forEach(doc => {
       const productRef = productsRef.doc(doc.id);
-      batch.update(productRef, { createdByDisplayName: newCreatorName });
+      batch.update(productRef, { createdByName: newCreatorName });
     });
 
     await batch.commit();

@@ -16,11 +16,13 @@ import Icon from "icons";
 import DialogDrawer from "./dialog-drawer"; 
 // GLOBAL CUSTOM COMPONENTS
 
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+
 import { useRouter } from "next/navigation";
 import { useAuth } from "contexts/SessionContext";
 import Image from "components/BazaarImage";
 import { Paragraph } from "components/Typography";
-import { MobileMenu } from "components/navbar/mobile-menu";
 import { FlexBetween, FlexBox } from "components/flex-box"; 
 import LoginIcon from '@mui/icons-material/Login';
 
@@ -55,10 +57,6 @@ export default function MobileHeader() {
 
   return <Fragment>
       <FlexBetween width="100%">
-
-        <Box flex={1}>
-          <MobileMenu />
-        </Box>
 
         <Link href="/">
           <Image height={44} src="/assets/images/brand/black.svg" alt="logo" />

@@ -15,8 +15,8 @@ export default function Heading({
 }) {
   return <FlexBetween mb={4}>
       <H2 fontSize={24}>{title}</H2>
-      <StyledButton disableFocusRipple endIcon={<ArrowRightAlt fontSize="inherit" />}>
+      {/*<StyledButton disableFocusRipple endIcon={<ArrowRightAlt fontSize="inherit" />}>
         View All
-      </StyledButton>
+      </StyledButton>*/}
     </FlexBetween>;
 }

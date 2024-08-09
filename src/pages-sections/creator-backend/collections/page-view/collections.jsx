@@ -75,7 +75,7 @@ export default function CollectionsPageView({}) {
     id: item.id,
     name: item.name,
     image: item.thumbnail,
-    likes: item.likes || 0,
+    likes: item.userLikes ? item.userLikes.length : 0,
     published: item.published,
     qrCodeImage: item.qr_code
   }));

@@ -30,7 +30,7 @@ import { UploadImageBox, StyledClear } from "../styles";
 
 // FORM FIELDS VALIDATION SCHEMA
 const VALIDATION_SCHEMA = yup.object().shape({
-  name: yup.string().required("Name is required!")
+  name: yup.string().required("Name is required!").max(25, "Name cannot be more than 25 characters")
 });
 
 export default function CollectionForm({ initialData, collectionId }) {
@@ -49,20 +49,16 @@ export default function CollectionForm({ initialData, collectionId }) {
 
   useEffect(() => {
     if (initialData) {
-      let filesArray = [];
-      // If a thumbnail is set, add it first
+      const filesArray = initialData.imageUrls.map(url => ({
+        preview: url,
+        name: url.split('/').pop(),
+      }));
       if (initialData.thumbnail) {
-        filesArray.push({
+        filesArray.unshift({
           preview: initialData.thumbnail,
           name: initialData.thumbnail.split('/').pop(),
         });
-        setThumbnail(initialData.thumbnail);
       }
-      filesArray = filesArray.concat(initialData.imageUrls.map(url => ({
-        preview: url,
-        name: url.split('/').pop(),
-      })));
-    
       setFiles(filesArray);
     }
   }, [initialData]);
@@ -70,24 +66,33 @@ export default function CollectionForm({ initialData, collectionId }) {
 
   const handleFormSubmit = async (values, { resetForm }) => {
     try {
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+      const userData = userDoc.data();
+
       if (!collectionId) {
         collectionId = uuidv4();
       }
       const docRef = doc(db, "collections", collectionId);
-      const uploadedImageUrls = await uploadFiles(files, collectionId, user.uid);
-      const [thumbnail, ...imageUrls] = uploadedImageUrls;
 
-      const qr_code_url = await generateQRCode(collectionId, user.uid);
+      console.log(files)
+
+      const thumbnailFile = files[0];
+      const thumbnailUrl = await uploadFile(thumbnailFile, collectionId, user.uid);
+      const uploadedImageUrls = await uploadFiles(files.slice(1), collectionId, user.uid);
+      //const qr_code_url = await generateQRCode(collectionId, user.uid);
+
       await setDoc(docRef, {
         ...values,
         name: values.name,
         content: content || "",
         published: values.published,
-        thumbnail: thumbnail,
-        imageUrls: imageUrls,
+        thumbnail: thumbnailUrl,
+        imageUrls: uploadedImageUrls,
         createdBy: user.uid,
+        createdByName: userData.displayName,
         createdAt: new Date(),
-        qr_code: qr_code_url || "",
+        //qr_code: qr_code_url || "",
       });
 
       router.push(`/dashboard/collections/${collectionId}`);
@@ -115,29 +120,34 @@ export default function CollectionForm({ initialData, collectionId }) {
     }
   };
 
+
   const uploadFiles = async (files, collectionId, userId) => {
-    let imageUrls = [];
+    const uploadPromises = files.map(file => uploadFile(file, collectionId, userId));
+    const results = await Promise.allSettled(uploadPromises);
     
-    for (const file of files) {
-      const downloadURL = await uploadFile(file, collectionId, userId);
-      if (downloadURL) {
-        imageUrls.push(downloadURL);
-      }
-    }
-  
-    return imageUrls;
+    return results.map(result => (result.status === "fulfilled" ? result.value : null));
   };
-  
+
   const uploadFile = async (file, collectionId, userId) => {
-    const storageRef = ref(storage, `${userId}/collections/${collectionId}/${file.name}`);
-    
+    let filename = file.name;
+    if (!filename) {
+      filename = `${uuidv4()}`;
+    }
+   
+    const storageRef = ref(storage, `${userId}/collections/${collectionId}/${filename}`);
+
+    console.log("Attempted upload file: ", file);
     try {
-      const snapshot = await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(snapshot.ref);
-      return downloadURL;
+      const existingDownloadURL = await getDownloadURL(storageRef);
+      return existingDownloadURL;
     } catch (error) {
-      console.log("Error uploading file:", error.code);
-      return null;
+      if (error.code == "storage/object-not-found") {
+          const snapshot = await uploadBytes(storageRef, file);
+          const url = await getDownloadURL(snapshot.ref);
+          return url
+      } else {
+        return null
+      }
     }
   };
   
@@ -154,7 +164,7 @@ export default function CollectionForm({ initialData, collectionId }) {
     });
     
     setFiles(updatedFiles);
-  };
+  }; 
 
   const handleFileDelete = (file) => async () => {
     if (collectionId) {
@@ -172,6 +182,20 @@ export default function CollectionForm({ initialData, collectionId }) {
     }
 
     setFiles(filteredFiles);
+  };
+
+  const handleFileOrderChange = (index, direction) => {
+    setFiles((files) => {
+      const newFiles = [...files];
+      const [movedFile] = newFiles.splice(index, 1);
+      newFiles.splice(index + direction, 0, movedFile);
+      
+      if (index + direction === 0) {
+        setThumbnail(movedFile.preview);
+      }
+  
+      return newFiles;
+    });
   };
 
   return (

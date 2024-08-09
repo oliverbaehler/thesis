@@ -37,6 +37,10 @@ const tableHeading = [{
   label: "QR Code",
   align: "left"
 }, {
+  id: "likes",
+  label: "Likes",
+  align: "left"
+},{
   id: "published",
   label: "Published",
   align: "left"
@@ -80,6 +84,7 @@ export default function ProductsPageView({}) {
     collectionId: item.collectionId,
     collectionName: item.collectionName,
     image: item.thumbnail,
+    likes: item.userLikes ? item.userLikes.length : 0,
     published: item.published,
     qrCodeImage: item.qr_code
   }));

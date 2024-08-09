@@ -35,7 +35,7 @@ export default function Card1({product, color}) {
         </H3>
 
         <Paragraph mt={4} fontSize={18} fontWeight={600}>
-          By {product.createdByDisplayName}
+          By {product.createdByName}
         </Paragraph>
       </div>
     </Card1Wrapper>

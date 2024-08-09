@@ -1,4 +1,6 @@
 import duotone from "icons/duotone";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+
 export const navigation = [{
   type: "label",
   label: "Creator"
@@ -25,7 +27,11 @@ export const navigation = [{
 }, {
   type: "label",
   label: "User"
-}, {
+},  {
+  name: "Liked",
+  icon:  FavoriteIcon,
+  path: "/dashboard"
+},{
   name: "Account Settings",
   icon: duotone.AccountSetting,
   path: "/dashboard/account-settings"

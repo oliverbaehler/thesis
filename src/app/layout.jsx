@@ -5,13 +5,9 @@ export const openSans = Open_Sans({
 
 import ThemeProvider from "theme/theme-provider"; 
 import {SessionProvider} from "contexts/SessionContext"; 
-//import { getServerSession } from "next-auth/next"
-//import { SessionProvider } from "next-auth/react"
 
 import RTL from "components/rtl";
 import ProgressBar from "components/progress"; 
-
-//import { authOptions } from "../../draft/api/auth/[...nextauth]";
 
 import "i18n";
 export default function RootLayout({ children }) {

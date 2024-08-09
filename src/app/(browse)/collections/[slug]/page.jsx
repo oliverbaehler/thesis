@@ -26,7 +26,10 @@ export async function fetchProductAndRelated(slug) {
         thumbnail: collectionData.thumbnail,
         createdBy: collectionData.createdBy,
         creatorName: collectionData.createdByName,
+        userLikes: collectionData.userLikes || []
       };
+
+      console.log("Collection", collection)
 
       const relatedProductsSnapshot = await adminDb.collection('products')
         .where("collectionId", "==", collection.id)
@@ -41,6 +44,8 @@ export async function fetchProductAndRelated(slug) {
         collectionName: doc.data().collectionName,
         thumbnail: doc.data().thumbnail
       }));
+
+      console.log("Products", relatedProducts)
 
       return { collection, relatedProducts };
     } else {
