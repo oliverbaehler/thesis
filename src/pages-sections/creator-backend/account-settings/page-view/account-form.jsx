@@ -88,41 +88,6 @@ export default function AccountSettingsPageView({initialData, user}) {
                   <TextField fullWidth color="info" size="medium" name="displayName" label="Creator Name" onBlur={handleBlur} onChange={handleChange} value={values.displayName} error={!!touched.displayName && !!errors.displayName} helperText={touched.displayName && errors.displayName} />
                 </Grid>
 
-                <Grid item md={6} xs={12}>
-                <Box position="absolute" bottom={20} left={24}>
-                  <Badge
-                    overlap="circular"
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
-                    }}
-                    badgeContent={
-                      <label htmlFor="profile-image">
-                        <UploadButton component="span" style={{ bgcolor: "grey.300" }} />
-                        <input
-                          id="profile-image"
-                          type="file"
-                          accept="image/*"
-                          style={{ display: "none" }}
-                          onChange={handleProfileImageChange}
-                        />
-                      </label>
-                    }
-                  >
-                    <Avatar
-                      alt="user"
-                      src={profileImage ? URL.createObjectURL(profileImage) : initialData?.profileImage || "/assets/images/faces/propic(9).png"}
-                      sx={{
-                        width: 80,
-                        height: 80,
-                        border: "4px solid",
-                        borderColor: "grey.100",
-                      }}
-                    />
-                  </Badge>
-                </Box>
-                </Grid>
-
                 <Grid item xs={12}>
                   <Typography variant="h5" component="h5" gutterBottom>
                     Biographie

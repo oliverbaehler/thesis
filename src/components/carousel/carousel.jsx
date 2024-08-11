@@ -24,6 +24,7 @@ const Carousel = forwardRef((props, ref) => {
     children,
     arrowStyles,
     dots = false,
+    infinite = false,
     arrows = true,
     slidesToShow = 1,
     spaceBetween = 10,

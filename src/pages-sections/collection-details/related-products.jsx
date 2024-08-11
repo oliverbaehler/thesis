@@ -11,7 +11,8 @@ export default async function ProductCarousel({products}) {
   return <SectionCreator icon={<Light color="primary" />} title="Items from this collection">
       <Carousel slidesToShow={products.length} arrowStyles={{
       color: "#2B3445",
-      backgroundColor: "white"
+      backgroundColor: "white",
+
     }}>
         {products.map(item => <ProductCard2 key={item.id} type="products" id={item.id} title={item.name} creatorName={item.createdByName} creatorId={item.createdBy} imgUrl={item.thumbnail} />)}
       </Carousel>

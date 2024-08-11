@@ -7,7 +7,6 @@ import Rating from "@mui/material/Rating";
 import Favorite from "@mui/icons-material/Favorite";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 
-import useProduct from "./use-product"; 
 
 import LazyImage from "components/LazyImage";
 import { FlexRowCenter } from "components/flex-box";
@@ -31,34 +30,12 @@ export default function ProductCard({
     creatorId,
     creatorName,
   } = product || {};
-  const {
-    isFavorite,
-    openModal,
-    toggleDialog,
-    toggleFavorite
-  } = useProduct(id);
 
   return <Card>
       <CardMedia>
         <Link href={`/products/${id}`}>
           <LazyImage width={300} height={300} alt="category" className="product-img" src={thumbnail} />
         </Link>
-
-        {
-        /* PRODUCT FAVORITE BUTTON */
-      }
-        <FavoriteButton className="product-actions" onClick={toggleFavorite}>
-          {isFavorite ? <Favorite className="icon" fontSize="small" color="primary" /> : <FavoriteBorder className="icon" fontSize="small" />}
-        </FavoriteButton>
-
-        {
-        /* PRODUCT QUICK VIEW BUTTON */
-      }
-        <Box mx={1} position="relative">
-          <QuickViewButton fullWidth size="large" color="dark" variant="contained" className="product-view-action" onClick={toggleDialog}>
-            Quick View
-          </QuickViewButton>
-        </Box>
       </CardMedia>
 
       <Box p={1} textAlign="center">

@@ -23,6 +23,7 @@ export default function ProductIntro({
   product,
   collection
 }) {
+  console.log(collection)
   const {
     id,
     name,
@@ -114,7 +115,7 @@ export default function ProductIntro({
       <FlexBox flexDirection="row" alignItems="center" mt={2}>
         <Avatar
           alt={collection.name}
-          src={collection.thumbnail}
+          src={collection.thumnail}
           variant="square"
           sx={{ width: 80, height: 80, borderRadius: 2, mr: 2 }}
         />
