@@ -51,18 +51,25 @@ export default function CollectionForm({ initialData, collectionId }) {
     if (initialData) {
       const filesArray = initialData.imageUrls.map(url => ({
         preview: url,
-        name: url.split('/').pop(),
+        name: extractFilenameFromUrl(url)
       }));
       if (initialData.thumbnail) {
         filesArray.unshift({
           preview: initialData.thumbnail,
-          name: initialData.thumbnail.split('/').pop(),
+          name: extractFilenameFromUrl(initialData.thumbnail)
         });
       }
       setFiles(filesArray);
+      console.log(filesArray)
     }
   }, [initialData]);
 
+  const extractFilenameFromUrl = (url) => {
+    const decodedUrl = decodeURIComponent(url);
+    const segments = decodedUrl.split('/');
+    const filenameWithParams = segments.pop();
+    return filenameWithParams.split('?')[0];
+  };
 
   const handleFormSubmit = async (values, { resetForm }) => {
     try {
@@ -75,12 +82,10 @@ export default function CollectionForm({ initialData, collectionId }) {
       }
       const docRef = doc(db, "collections", collectionId);
 
-      console.log(files)
-
       const thumbnailFile = files[0];
       const thumbnailUrl = await uploadFile(thumbnailFile, collectionId, user.uid);
       const uploadedImageUrls = await uploadFiles(files.slice(1), collectionId, user.uid);
-      //const qr_code_url = await generateQRCode(collectionId, user.uid);
+      const qr_code_url = generateQRCode(collectionId, user.uid);
 
       await setDoc(docRef, {
         ...values,
@@ -92,7 +97,7 @@ export default function CollectionForm({ initialData, collectionId }) {
         createdBy: user.uid,
         createdByName: userData.displayName,
         createdAt: new Date(),
-        //qr_code: qr_code_url || "",
+        qr_code: qr_code_url || "",
       });
 
       router.push(`/dashboard/collections/${collectionId}`);
@@ -102,52 +107,27 @@ export default function CollectionForm({ initialData, collectionId }) {
     }
   };
 
-  const generateQRCode = async (collectionId, userId) => {
-    try {
+  const generateQRCode = (collectionId, userId) => {
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-      const url = `${baseUrl}/collections/${collectionId}`;
-      const qrCodeDataUrl = await QRCode.toDataURL(url);
-      
-      const storagePath = `${userId}/collections/${collectionId}/${collectionId}-code.png`;
-      const storageRef = ref(storage, storagePath);
-  
-      await uploadString(storageRef, qrCodeDataUrl, 'data_url');
-      const downloadURL = await getDownloadURL(storageRef);
-      
-      return downloadURL;
-    } catch (error) {
-      console.error('Error generating QR code:', error);
-    }
-  };
+      return `${baseUrl}/collections/${collectionId}`;
+  }
 
 
   const uploadFiles = async (files, collectionId, userId) => {
-    const uploadPromises = files.map(file => uploadFile(file, collectionId, userId));
-    const results = await Promise.allSettled(uploadPromises);
-    
-    return results.map(result => (result.status === "fulfilled" ? result.value : null));
+    return Promise.all(files.map(file => uploadFile(file, collectionId, userId)));
   };
 
   const uploadFile = async (file, collectionId, userId) => {
-    let filename = file.name;
-    if (!filename) {
-      filename = `${uuidv4()}`;
-    }
-   
-    const storageRef = ref(storage, `${userId}/collections/${collectionId}/${filename}`);
-
-    console.log("Attempted upload file: ", file);
+    const storageRef = ref(storage, `${userId}/collections/${collectionId}/${file.name}`);
     try {
       const existingDownloadURL = await getDownloadURL(storageRef);
       return existingDownloadURL;
     } catch (error) {
       if (error.code == "storage/object-not-found") {
-          const snapshot = await uploadBytes(storageRef, file);
-          const url = await getDownloadURL(snapshot.ref);
-          return url
-      } else {
-        return null
-      }
+        const snapshot = await uploadBytes(storageRef, file);
+        return await getDownloadURL(snapshot.ref);
+      } 
+      throw error;
     }
   };
   

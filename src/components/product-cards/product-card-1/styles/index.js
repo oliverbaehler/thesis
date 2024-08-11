@@ -1,9 +1,7 @@
 import styled from "@mui/material/styles/styled"; 
-// GLOBAL CUSTOM COMPONENT
-
 import BazaarCard from "components/BazaarCard";
+
 export const StyledBazaarCard = styled(BazaarCard)({
-  height: "100%",
   margin: "auto",
   display: "flex",
   overflow: "hidden",
@@ -18,16 +16,19 @@ export const StyledBazaarCard = styled(BazaarCard)({
     }
   }
 });
+
 export const ImageWrapper = styled("div")(({
   theme
 }) => ({
   textAlign: "center",
   position: "relative",
   display: "inline-block",
+  width: "100%", // Ensure wrapper takes full width
   [theme.breakpoints.down("sm")]: {
     display: "block"
   }
 }));
+
 export const HoverIconWrapper = styled("div")({
   zIndex: 2,
   top: "7px",
@@ -39,10 +40,12 @@ export const HoverIconWrapper = styled("div")({
   flexDirection: "column",
   transition: "all 0.3s ease-in-out"
 });
+
 export const ContentWrapper = styled("div")({
   gap: 8,
   display: "flex",
   padding: "1rem",
+  flexDirection: "column", // Stack the text content vertically
   "& .title, & .categories": {
     overflow: "hidden",
     whiteSpace: "nowrap",

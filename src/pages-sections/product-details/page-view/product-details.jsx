@@ -1,22 +1,12 @@
 import Container from "@mui/material/Container"; 
-// Local CUSTOM COMPONENTS
 
-import ProductTabs from "../product-tabs";
+import ProductDescription from "../product-description";
 import ProductIntro from "../product-intro";
-import AvailableShops from "../available-shops";
-import RelatedProducts from "../related-products";
-
 
 // ==============================================================
 export default function ProductDetailsPageView(props) {
   return <Container className="mt-2 mb-2">
-      <ProductIntro product={props.product} />
-      <ProductTabs description={props.product.description}/>
-      <AvailableShops />
-
-      {
-      /* RELATED PRODUCTS AREA 
-      <RelatedProducts products={props.relatedProducts} /> */
-    }
+      <ProductIntro product={props.product} collection={props.collection}/>
+      <ProductDescription description={props.product.description}/>
     </Container>;
 }

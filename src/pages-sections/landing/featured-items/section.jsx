@@ -19,7 +19,6 @@ export default function Section11() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // Fetch all products from Firestore
         const productsRef = collection(db, "products");
         const q = query(
           productsRef,
@@ -32,8 +31,8 @@ export default function Section11() {
         const data = doc.data();
         return {
               id: doc.id,
-              collectionId: data.collectionId,
-              collectionName: data.collectionName,
+              creatorName: data.createdByName,
+              creatorId: data.createdBy,
               description: data.content,
               name: data.name,
               images: data.imageUrls,

@@ -77,7 +77,9 @@ export default function WishListPageView(props) {
                 type={item.type} 
                 id={item.id} 
                 name={item.name} 
-                thumbnail={item.thumbnail} 
+                thumbnail={item.thumbnail}
+                creatorName={item.createdByName}
+                creatorId={item.createdBy}
               />
             </Grid>
           ))}

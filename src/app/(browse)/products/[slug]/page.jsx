@@ -1,4 +1,5 @@
 
+import { notFound } from "next/navigation"; 
 import { adminDb } from 'firebaseAdmin';
 import { ProductDetailsPageView } from "pages-sections/product-details/page-view"; 
 export const metadata = {
@@ -12,7 +13,7 @@ export async function fetchProductAndRelated(slug) {
   }
 
   try {
-    const docRef = adminDb.collection('collections').doc(slug);
+    const docRef = adminDb.collection('products').doc(slug);
     const docSnapshot = await docRef.get();
 
     if (docSnapshot.exists && docSnapshot.data().published) {
@@ -22,28 +23,25 @@ export async function fetchProductAndRelated(slug) {
         name: productData.name,
         description: productData.content,
         images: productData.imageUrls,
-        collectionId: productData.collectionId,
-        collectionName: productData.collectionName,
-        thumbnail: productData.thumbnail
+        thumbnail: productData.thumbnail,
+        createdBy: productData.createdBy,
+        creatorName: productData.createdByName,
+        userLikes: productData.userLikes || []
       };
 
-      // Fetch related products
-      const relatedProductsSnapshot = await adminDb.collection('products')
-        .where("collectionId", "==", product.collectionId)
-        .where("published", "==", true)
-        .get();
+      const docCollectionRef = adminDb.collection('collections').doc(productData.collectionId);
+      const docCollectionSnapshot = await docCollectionRef.get();
 
-      const relatedProducts = relatedProductsSnapshot.docs.map(doc => ({
-        id: doc.id,
-        name: doc.data().name,
-        description: doc.data().content,
-        images: doc.data().imageUrls,
-        collectionId: doc.data().collectionId,
-        collectionName: doc.data().collectionName,
-        thumbnail: doc.data().thumbnail
-      }));
+      if (docCollectionSnapshot.exists) {
+        const collectionData = docCollectionSnapshot.data();
+        const collection = {
+          id: docCollectionSnapshot.id,
+          name: collectionData.name,
+          thumbnail: collectionData.thumbnail,
+        };
 
-      return { product, relatedProducts };
+        return { product, collection };
+      }
     } else {
       notFound(); // Throw a 404 if no document is found
     }
@@ -57,6 +55,7 @@ export async function fetchProductAndRelated(slug) {
 export default async function ProductDetails({ params }) {
   const { slug } = params;
 
-  const { product, relatedProducts } = await fetchProductAndRelated(slug);
-  return <ProductDetailsPageView product={product} relatedProducts={relatedProducts} />;
+  const { product, collection } = await fetchProductAndRelated(slug);
+  console.log("Collection", collection)
+  return <ProductDetailsPageView product={product} collection={collection} />;
 }

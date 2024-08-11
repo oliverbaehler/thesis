@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Avatar from "@mui/material/Avatar"; 
-import Image from 'next/image' 
-// MUI ICON COMPONENTS
+import Image from 'next/image'
 
 import Link from "next/link";
+import { useAuth } from "contexts/SessionContext";
+import { QRCodePopover } from 'components/qr-code';
 import QrCodeIcon from '@mui/icons-material/QrCode';
 import Edit from "@mui/icons-material/Edit";
 import Delete from "@mui/icons-material/Delete";
@@ -12,21 +13,14 @@ import RemoveRedEye from "@mui/icons-material/RemoveRedEye";
 import { Paragraph, Small } from "components/Typography";
 // GLOBAL CUSTOM COMPONENT
 
-import { db } from "firebaseConfig";
-import { doc, updateDoc } from "firebase/firestore";
+import { db, storage } from "firebaseConfig";
+import { doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { ref, deleteObject, listAll } from "firebase/storage";
 
 import { FlexBox } from "components/flex-box";
 import BazaarSwitch from "components/BazaarSwitch"; 
-// STYLED COMPONENTS
 
 import { StyledTableRow, StyledTableCell, CategoryWrapper, StyledIconButton } from "../styles"; 
-import Popover from '@mui/material/Popover';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import DownloadIcon from '@mui/icons-material/Download';
 // ========================================================================
 
 
@@ -41,9 +35,10 @@ export default function CollectionRow({
     image,
     likes,
     published,
-    qrCodeImage
+    qrCodeSettings
   } = collection || {};
 
+  const user = useAuth();
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
   const [cpublished, setPublished] = useState(published);
@@ -63,19 +58,41 @@ export default function CollectionRow({
     }
   };
 
+
+  const handleDelete = async () => {
+    try {
+      const docRef = doc(db, "collections", id);
+      await deleteDoc(docRef);
+
+      const storageRef = ref(storage, `${user.uid}/collections/${id}`);
+      const { items, prefixes } = await listAll(storageRef);
+
+      // Delete files in the folder
+      const deletePromises = items.map((fileRef) => deleteObject(fileRef));
+      await Promise.all(deletePromises);
+
+      const deleteFolderPromises = prefixes.map(async (folderRef) => {
+        const { items: subItems, prefixes: subPrefixes } = await listAll(folderRef);
+        const subDeletePromises = subItems.map((subFileRef) => deleteObject(subFileRef));
+        await Promise.all(subDeletePromises);
+        return deleteFolderPromises;
+      });
+
+      await Promise.all(deleteFolderPromises);
+
+      console.log('Collection and associated files deleted successfully.');
+    } catch (error) {
+      console.error("Error deleting collection:", error);
+    }
+  };
+
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = qrCodeImage;
-    link.download = name + "-qrcode.png";
-    link.click();
   };
 
   const open = Boolean(anchorEl);
@@ -100,55 +117,16 @@ export default function CollectionRow({
     </StyledIconButton>
   </StyledTableCell>
 
-  <Popover
-    id={popup_id}
+  <QRCodePopover
     open={open}
     anchorEl={anchorEl}
-    onClose={handleClose}
-    anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'center',
-    }}
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'center',
-    }}
-  >
-    <Card>
-      <CardContent>
-        <Typography variant="h6" gutterBottom>
-          Product Code
-        </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            p: 2,
-            width: { xs: '250px', sm: '300px', md: '350px' },
-            height: 'auto',
-          }}
-        >
-          <Image
-                src={qrCodeImage}
-                width={350}
-                height={350}
-                alt="QR Code"
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<DownloadIcon />}
-            onClick={handleDownload}
-          >
-            Download
-          </Button>
-        </Box>
-      </CardContent>
-    </Card>
-  </Popover>
-
+    handleClose={handleClose}
+    popup_id={popup_id}
+    collection="collections"
+    id={id}
+    url={`https://example.com/collections/${id}`}
+    initialData={qrCodeSettings}
+  />
   <StyledTableCell align="left">
     <CategoryWrapper>{likes}</CategoryWrapper>
   </StyledTableCell>
@@ -166,7 +144,7 @@ export default function CollectionRow({
       <RemoveRedEye/>
     </StyledIconButton>
 
-    <StyledIconButton>
+    <StyledIconButton onClick={handleDelete}>
       <Delete />
     </StyledIconButton>
   </StyledTableCell>

@@ -36,7 +36,7 @@ export default function EditProductPageView() {
             console.error("No such product!");
           }
         } catch (error) {
-          console.error("Error fetching product:", error);
+          router.push("/dashboard/products/create");
         } finally {
           setLoading(false);
         }

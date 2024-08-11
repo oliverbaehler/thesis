@@ -92,11 +92,9 @@ export default function CollectionIntro({
 
         <Grid item md={6} xs={12} alignItems="center">
           <FlexBox justifyContent="space-between" alignItems="center" mb={2}>
-            <Link href={`/profile/${createdBy}`} passHref>
               <FlexBox alignItems="center" sx={{ cursor: 'pointer', textDecoration: 'none' }}>
                 <H1>{name}</H1>
               </FlexBox>
-            </Link>
             <Button
               onClick={handleLikeToggle}
               variant="contained"

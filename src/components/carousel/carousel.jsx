@@ -25,10 +25,10 @@ const Carousel = forwardRef((props, ref) => {
     arrowStyles,
     dots = false,
     arrows = true,
-    slidesToShow = 4,
+    slidesToShow = 1,
     spaceBetween = 10,
     dotStyles = {
-      mt: 4
+      mt: 1
     },
     ...others
   } = props;

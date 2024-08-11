@@ -28,6 +28,8 @@ export default function ProductCard({
     name,
     images,
     thumbnail,
+    creatorId,
+    creatorName,
   } = product || {};
   const {
     isFavorite,
@@ -59,21 +61,11 @@ export default function ProductCard({
         </Box>
       </CardMedia>
 
-      {
-      /* PRODUCT VIEW DIALOG BOX */
-    }
-      <ProductViewDialog openDialog={openModal} handleCloseDialog={toggleDialog} product={{
-      id,
-      name,
-      images,
-      description
-    }} />
-
       <Box p={1} textAlign="center">
-        {
-        /* PRODUCT TITLE / NAME */
-      }
         <Paragraph fontWeight="bold">{name}</Paragraph>
+        <Link href={`/creator/${creatorId}`}>
+          <Paragraph>{creatorName}</Paragraph>
+      </Link>
       </Box>
     </Card>;
 }

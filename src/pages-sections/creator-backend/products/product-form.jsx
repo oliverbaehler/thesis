@@ -32,7 +32,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 // FORM VALIDATION SCHEMA
 const VALIDATION_SCHEMA = yup.object().shape({
   name: yup.string().required("Name is required!"),
-  productId: yup.string().required("Collection is required!"),
+  collectionId: yup.string().required("Collection is required!"),
 });
 
 export default function ProductForm({ initialData, productId }) {
@@ -62,8 +62,7 @@ export default function ProductForm({ initialData, productId }) {
 
   const INITIAL_VALUES = initialData || {
     name: "",
-    description: "",
-    productId: "",
+    collectionId: "",
     published: true,
     content: "",
     thumbnail: "",
@@ -73,17 +72,25 @@ export default function ProductForm({ initialData, productId }) {
     if (initialData) {
       const filesArray = initialData.imageUrls.map(url => ({
         preview: url,
-        name: url.split('/').pop(),
+        name: extractFilenameFromUrl(url)
       }));
       if (initialData.thumbnail) {
         filesArray.unshift({
           preview: initialData.thumbnail,
-          name: initialData.thumbnail.split('/').pop(),
+          name: extractFilenameFromUrl(initialData.thumbnail)
         });
       }
       setFiles(filesArray);
+      console.log(filesArray)
     }
   }, [initialData]);
+
+  const extractFilenameFromUrl = (url) => {
+    const decodedUrl = decodeURIComponent(url);
+    const segments = decodedUrl.split('/');
+    const filenameWithParams = segments.pop();
+    return filenameWithParams.split('?')[0];
+  };
 
   const handleFormSubmit = async (values, { resetForm }) => {
     const userDocRef = doc(db, "users", user.uid);
@@ -106,8 +113,8 @@ export default function ProductForm({ initialData, productId }) {
         name: values.name,
         content: content || "",
         published: values.published,
-        collectionName: collections.find(collection => collection.id === values.productId).name,
-        productId: values.productId, // Store the productId as an attribute
+        collectionName: collections.find(collection => collection.id === values.collectionId).name,
+        collectionId: values.collectionId, // Store the productId as an attribute
         thumbnail: thumbnailUrl,
         imageUrls: uploadedImageUrls,
         createdBy: user.uid,
@@ -124,21 +131,8 @@ export default function ProductForm({ initialData, productId }) {
   };
 
   const generateQRCode = async (productId, userId) => {
-    try {
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-      const url = `${baseUrl}/collections/${productId}`;
-      const qrCodeDataUrl = await QRCode.toDataURL(url);
-      
-      const storagePath = `${userId}/products/${productId}/${productId}-code.png`;
-      const storageRef = ref(storage, storagePath);
-  
-      await uploadString(storageRef, qrCodeDataUrl, 'data_url');
-      const downloadURL = await getDownloadURL(storageRef);
-      
-      return downloadURL;
-    } catch (error) {
-      console.error('Error generating QR code:', error);
-    }
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    return `${baseUrl}/collections/${productId}`;
   };
 
   const uploadFiles = async (files, productId, userId) => {
@@ -252,8 +246,8 @@ export default function ProductForm({ initialData, productId }) {
                   <Select
                     labelId="collection-select-label"
                     id="collection-select"
-                    name="productId"
-                    value={values.productId}
+                    name="collectionId"
+                    value={values.collectionId}
                     label="Collection"
                     onChange={handleChange}
                   >
@@ -263,9 +257,9 @@ export default function ProductForm({ initialData, productId }) {
                       </MenuItem>
                     ))}
                   </Select>
-                  {touched.productId && errors.productId && (
+                  {touched.collectionId && errors.collectionId && (
                     <div style={{ color: "red", marginTop: "0.5rem" }}>
-                      {errors.productId}
+                      {errors.collectionId}
                     </div>
                   )}
                 </FormControl>
