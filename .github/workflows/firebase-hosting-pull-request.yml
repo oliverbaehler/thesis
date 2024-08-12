@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     env:
+      FIREBASE_CLI_EXPERIMENTS: webframeworks
       GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
       GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
       NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
