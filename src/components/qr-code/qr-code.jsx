@@ -14,33 +14,17 @@ import { idText } from 'typescript';
 
 export default function QRCodeCustomizer({ open, anchorEl, handleClose, popup_id, collection, id, url, initialData }) {
   const { Canvas } = useQRCode();
-  const [darkColor, setDarkColor] = useState(initialData?.darkColor || '#010599FF');
+  const logo = "/assets/images/brand/qr-default-image.jpg"
+  const [darkColor, setDarkColor] = useState(initialData?.darkColor || '#000000');
   const [lightColor, setLightColor] = useState(initialData?.lightColor || '#FFFFFF');
-  const [logo, setLogo] = useState(initialData?.logo || "/assets/images/brand/qr-default-image.jpg");
   const [logoFile, setLogoFile] = useState(null);
 
-  const handleLogoUpload = (event) => {
-    if (event.target.files[0]) {
-      setLogoFile(event.target.files[0]);
-      const logoURL = URL.createObjectURL(event.target.files[0]);
-      setLogo(logoURL);
-    }
-  };
-
   const handleSaveSettings = async () => {
-    let logoUrl = logo;
-    if (logoFile) {
-      const logoStorageRef = ref(storage, `${userId}/${collection}/${id}/custom-qr-code.png`);
-      const snapshot = await uploadBytes(logoStorageRef, logoFile);
-      logoUrl = await getDownloadURL(snapshot.ref);
-    }
-
     const collectionDocRef = doc(db, collection, id);
     await updateDoc(collectionDocRef, {
       'qrCodeSettings': {
         darkColor,
-        lightColor,
-        logo: logoUrl,
+        lightColor
       }
     });
   };
@@ -105,18 +89,6 @@ export default function QRCodeCustomizer({ open, anchorEl, handleClose, popup_id
               <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
                 <HexColorPicker color={lightColor} onChange={setLightColor} style={{ width: '100%' }} />
               </Box>
-            </Grid>
-            <Grid item xs={12} sx={{ mt: 2 }}>
-              <H4>Upload Logo</H4>
-              <Button variant="contained" component="label" sx={{ mt: 1 }}>
-                Upload Logo
-                <input type="file" hidden onChange={handleLogoUpload} />
-              </Button>
-              {logo && (
-                <Box mt={2} sx={{ display: 'flex', justifyContent: 'center' }}>
-                  <img src={logo} alt="Logo Preview" style={{ maxWidth: '100px', maxHeight: '100px' }} />
-                </Box>
-              )}
             </Grid>
             <Grid item xs={12} container justifyContent="space-between" sx={{ mt: 3 }}>
               <Button variant="contained" color="primary" startIcon={<DownloadIcon />} onClick={handleDownload}>

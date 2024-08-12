@@ -7,6 +7,7 @@ import Image from 'next/image'
 // MUI ICON COMPONENTS
 
 import QrCodeIcon from '@mui/icons-material/QrCode';
+import { QRCodePopover } from 'components/qr-code';
 import Edit from "@mui/icons-material/Edit";
 import Delete from "@mui/icons-material/Delete";
 import RemoveRedEye from "@mui/icons-material/RemoveRedEye"; 
@@ -20,12 +21,6 @@ import { Paragraph, Small } from "components/Typography";
 import { useAuth } from "contexts/SessionContext";
 
 import { StyledTableRow, CategoryWrapper, StyledTableCell, StyledIconButton } from "../styles"; 
-import Popover from '@mui/material/Popover';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import DownloadIcon from '@mui/icons-material/Download';
 
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { ref, deleteObject, listAll } from "firebase/storage";
@@ -43,7 +38,8 @@ export default function ProductRow({
     image,
     likes,
     published,
-    qrCodeImage
+    qrCode,
+    qrCodeSettings
   } = product || {};
   const user = useAuth();
   const router = useRouter();
@@ -72,13 +68,6 @@ export default function ProductRow({
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleDownload = () => {
-    const link = document.createElement('a');
-    link.href = qrCodeImage;
-    link.download = name + "-qrcode.png";
-    link.click();
   };
 
   const handleDelete = useCallback(async () => {
@@ -136,55 +125,16 @@ export default function ProductRow({
           <QrCodeIcon />
         </StyledIconButton>
       </StyledTableCell>
-
-      <Popover
-        id={popup_id}
+      <QRCodePopover
         open={open}
         anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-      >
-        <Card>
-          <CardContent>
-            <Typography variant="h6" gutterBottom>
-              Product Code
-            </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                p: 2,
-                width: { xs: '250px', sm: '300px', md: '350px' },
-                height: 'auto',
-              }}
-            >
-              <Image
-                    src={qrCodeImage}
-                    width={350}
-                    height={350}
-                    alt="QR Code"
-              />
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<DownloadIcon />}
-                onClick={handleDownload}
-              >
-                Download
-              </Button>
-            </Box>
-          </CardContent>
-        </Card>
-      </Popover>
+        handleClose={handleClose}
+        popup_id={popup_id}
+        collection="products"
+        id={id}
+        url={qrCode}
+        initialData={qrCodeSettings}
+      />
 
       <StyledTableCell align="left">
        <CategoryWrapper>{likes}</CategoryWrapper>

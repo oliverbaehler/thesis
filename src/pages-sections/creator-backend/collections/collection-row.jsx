@@ -35,6 +35,7 @@ export default function CollectionRow({
     image,
     likes,
     published,
+    qrCode,
     qrCodeSettings
   } = collection || {};
 
@@ -116,7 +117,6 @@ export default function CollectionRow({
       <QrCodeIcon />
     </StyledIconButton>
   </StyledTableCell>
-
   <QRCodePopover
     open={open}
     anchorEl={anchorEl}
@@ -124,9 +124,10 @@ export default function CollectionRow({
     popup_id={popup_id}
     collection="collections"
     id={id}
-    url={`https://example.com/collections/${id}`}
+    url={qrCode}
     initialData={qrCodeSettings}
   />
+
   <StyledTableCell align="left">
     <CategoryWrapper>{likes}</CategoryWrapper>
   </StyledTableCell>

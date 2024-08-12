@@ -86,7 +86,8 @@ export default function ProductsPageView({}) {
     image: item.thumbnail,
     likes: item.userLikes ? item.userLikes.length : 0,
     published: item.published,
-    qrCodeImage: item.qr_code
+    qrCodeSettings: item.qrCodeSettings,
+    qrCode: item.qr_code
   }));
 
   const {

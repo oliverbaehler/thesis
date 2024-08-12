@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import QRCode from "qrcode";
 import Typography from '@mui/material/Typography';
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
