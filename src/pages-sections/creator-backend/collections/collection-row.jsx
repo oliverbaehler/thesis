@@ -26,8 +26,7 @@ import { StyledTableRow, StyledTableCell, CategoryWrapper, StyledIconButton } fr
 
 // ========================================================================
 export default function CollectionRow({
-  collection,
-  selected
+  collection, collections, setCollections 
 }) {
   const {
     id,
@@ -80,6 +79,7 @@ export default function CollectionRow({
       });
 
       await Promise.all(deleteFolderPromises);
+      setCollections((prevCollections) => prevCollections.filter((item) => item.id !== id));
 
       console.log('Collection and associated files deleted successfully.');
     } catch (error) {

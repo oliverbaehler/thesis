@@ -118,7 +118,7 @@ export default function CollectionsPageView({}) {
               />
               <TableBody>
                 {filteredList.map(collection => (
-                  <CollectionRow key={collection.id} collection={collection} />
+                  <CollectionRow key={collection.id} collection={collection} collections={collections} setCollections={setCollections} />
                 ))}
               </TableBody>
             </Table>

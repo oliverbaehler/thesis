@@ -28,7 +28,7 @@ import { db, storage } from "firebaseConfig";
 
 
 export default function ProductRow({
-  product
+  product, products, setProducts
 }) {
   const {
     id,
@@ -70,29 +70,33 @@ export default function ProductRow({
     setAnchorEl(null);
   };
 
-  const handleDelete = useCallback(async () => {
-    const productDirRef = ref(storage, `${user.uid}/products/${id}`);
-
-    console.log(productDirRef)
+  const handleDelete = async () => {
     try {
-      // List all files in the directory
-      const filesList = await listAll(productDirRef);
-      
-      // Delete all files
-      const deletePromises = filesList.items.map(fileRef => deleteObject(fileRef));
-      await Promise.all(deletePromises);
-
-      // Delete the document from Firestore
       const docRef = doc(db, "products", id);
       await deleteDoc(docRef);
 
-      console.log("Product and associated files deleted successfully.");
-      // Optionally, you can redirect the user or update the UI
-      router.push('/dashboard'); // Redirect to dashboard after deletion
+      const storageRef = ref(storage, `${user.uid}/products/${id}`);
+      const { items, prefixes } = await listAll(storageRef);
+
+      // Delete files in the folder
+      const deletePromises = items.map((fileRef) => deleteObject(fileRef));
+      await Promise.all(deletePromises);
+
+      const deleteFolderPromises = prefixes.map(async (folderRef) => {
+        const { items: subItems, prefixes: subPrefixes } = await listAll(folderRef);
+        const subDeletePromises = subItems.map((subFileRef) => deleteObject(subFileRef));
+        await Promise.all(subDeletePromises);
+        return deleteFolderPromises;
+      });
+
+      await Promise.all(deleteFolderPromises);
+      setProducts((prevCollections) => prevCollections.filter((item) => item.id !== id));
+
+      console.log('Collection and associated files deleted successfully.');
     } catch (error) {
-      console.error("Error deleting product: ", error);
+      console.error("Error deleting collection:", error);
     }
-  }, [id, collectionId, router, user]);
+  };
 
 
 

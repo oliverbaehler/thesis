@@ -113,7 +113,7 @@ export default function ProductsPageView({}) {
               <TableHeader order={order} hideSelectBtn orderBy={orderBy} heading={tableHeading} rowCount={productList.length} numSelected={selected.length} onRequestSort={handleRequestSort} />
 
               <TableBody>
-                {filteredList.map((product, index) => <ProductRow key={index} product={product}/>)}
+                {filteredList.map((product, index) => <ProductRow key={index} product={product} products={productList} setProducts={setProductList}/>)}
               </TableBody>
             </Table>
           </TableContainer>
