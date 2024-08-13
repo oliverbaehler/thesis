@@ -2,7 +2,6 @@
 .env*.local
 .firebase
 serviceaccount.json
-package-lock.json
 
 # vercel
 .vercel
