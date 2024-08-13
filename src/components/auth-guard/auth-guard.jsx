@@ -18,7 +18,6 @@ export default function AuthGuard({ children }) {
         setLoading(false);
       } else {
         const currentPath = window.location.pathname;
-        // If not authenticated, redirect to login (preserve current path)
         router.push(`/login?redirectTo=${encodeURIComponent(currentPath)}`);
       }
     });

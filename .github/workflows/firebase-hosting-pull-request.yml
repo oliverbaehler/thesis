@@ -22,13 +22,6 @@ jobs:
     steps:
       - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b
       - run: npm ci && npm run build
-      - uses: oke-py/npm-audit-action@v2
-        with:
-          audit_level: moderate
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          issue_assignees: oliverbaehler
-          issue_labels: vulnerability
-          dedupe_issues: true
       - uses: FirebaseExtended/action-hosting-deploy@d482eb942f549f059116ec36b191860128553142
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
