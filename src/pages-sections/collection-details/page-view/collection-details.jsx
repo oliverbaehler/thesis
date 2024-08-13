@@ -5,7 +5,6 @@ import { useRouter, useParams } from "next/navigation";
 import Container from "@mui/material/Container";
 import { doc, collection, query, where, getDocs, getDoc } from "firebase/firestore";
 import { db } from "firebaseConfig";
-import CollectionDescription from "../collection-description";
 import CollectionIntro from "../collection-intro";
 import ProductCarousel from "../related-products";
 
@@ -64,7 +63,6 @@ export default function CollectionDetailsPageView(props) {
 
   return <Container className="mt-2 mb-2">
       <CollectionIntro collection={collect} />
-      <CollectionDescription description={collect.description}/>
       <ProductCarousel products={relatedProducts} />
     </Container>;
 }

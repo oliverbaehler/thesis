@@ -6,7 +6,6 @@ import Container from "@mui/material/Container";
 import { doc, collection, query, where, getDocs, getDoc } from "firebase/firestore";
 import { db } from "firebaseConfig"; 
 
-import ProductDescription from "../product-description";
 import ProductIntro from "../product-intro";
 
 // ==============================================================
@@ -54,10 +53,7 @@ export default function ProductDetailsPageView() {
   }, [slug, router]);
   if (!product) return <div>Loading...</div>;
 
-  console.log("Product 1", product)
-
   return <Container className="mt-2 mb-2">
       <ProductIntro product={product} collection={collect}/>
-      <ProductDescription description={product.description}/>
     </Container>;
 }

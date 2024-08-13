@@ -5,6 +5,10 @@ import { useState, useEffect } from "react";
 import { useAuth } from "contexts/SessionContext";
 import Box from "@mui/material/Box";
 
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import { SectionCreator } from "components/section-header";
+
+import ProductDescription from "./product-description";
 import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -23,7 +27,6 @@ export default function ProductIntro({
   product,
   collection
 }) {
-  console.log(collection)
   const {
     id,
     name,
@@ -33,7 +36,7 @@ export default function ProductIntro({
     collectionName,
     thumbnail,
     createdBy,
-    creatorName,
+    createdByName,
     userLikes = []
 
   } = product || {};
@@ -105,13 +108,16 @@ export default function ProductIntro({
 
       <Link href={`/creator/${createdBy}`} passHref>
         <FlexBox alignItems="center" mb={1} sx={{ cursor: 'pointer', textDecoration: 'none' }}>
-          <H6>Created by {creatorName}</H6>
+          <H6>Created by {createdByName}</H6>
         </FlexBox>
       </Link>
 
     {/* COLLECTION PREVIEW */}
     <Box mt={4}>
-      <H3>Part of the Collection</H3>
+       <FlexBox alignItems="center" mb={1}>
+          <MenuBookIcon color="primary" sx={{ mr: 1 }} />
+         <H3>Collection</H3>
+      </FlexBox>
       <FlexBox flexDirection="row" alignItems="center" mt={2}>
         <Avatar
           alt={collection.name}
@@ -129,6 +135,15 @@ export default function ProductIntro({
         </Box>
       </FlexBox>
     </Box>
+
+
+      <Box mt={4} mb={2}>
+        <FlexBox alignItems="center" mb={1}>
+          <MenuBookIcon color="primary" sx={{ mr: 1 }} />
+         <H3>Story</H3>
+        </FlexBox>
+        <ProductDescription description={product.description} />
+      </Box>
     </Grid>
   </Grid>
 </Box>;

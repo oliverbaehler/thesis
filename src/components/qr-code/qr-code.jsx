@@ -1,23 +1,18 @@
 import { useState } from 'react';
-import { useQRCode } from 'next-qrcode';
 import { QRCode } from 'react-qrcode-logo';
 
 import { HexColorPicker } from 'react-colorful';
-import { db, storage } from 'firebaseConfig';
+import { db } from 'firebaseConfig';
 import { doc, updateDoc } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Box, Button, Card, CardContent, Typography, Popover, Grid, IconButton } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import CloseIcon from '@mui/icons-material/Close';
 import { H2, H4 } from 'components/Typography';
-import { idText } from 'typescript';
 
 export default function QRCodeCustomizer({ open, anchorEl, handleClose, popup_id, collection, id, url, initialData }) {
-  const { Canvas } = useQRCode();
   const logo = "/assets/images/brand/qr-default-image.jpg"
   const [darkColor, setDarkColor] = useState(initialData?.darkColor || '#000000');
   const [lightColor, setLightColor] = useState(initialData?.lightColor || '#FFFFFF');
-  const [logoFile, setLogoFile] = useState(null);
 
   const handleSaveSettings = async () => {
     const collectionDocRef = doc(db, collection, id);

@@ -5,13 +5,13 @@ import { useState, useEffect } from "react";
 import { useAuth } from "contexts/SessionContext";
 import Box from "@mui/material/Box";
 
-import Chip from "@mui/material/Chip";
 import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
-import Rating from "@mui/material/Rating";
 import Button from "@mui/material/Button"; 
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import CollectionDescription from "./collection-description";
 
 import LazyImage from "components/LazyImage";
 import { H1, H2, H3, H6 } from "components/Typography";
@@ -110,8 +110,15 @@ export default function CollectionIntro({
               <H6>Created by {creatorName}</H6>
             </FlexBox>
           </Link>
-        </Grid>
 
+          <Box mt={4} mb={2}>
+            <FlexBox alignItems="center" mb={1}>
+              <MenuBookIcon color="primary" sx={{ mr: 1 }} />
+              <H3>Story</H3>
+            </FlexBox>
+            <CollectionDescription description={collection.description} />
+          </Box>
+        </Grid>
       </Grid>
     </Box>;
 }

@@ -52,7 +52,7 @@ export default function MobileHeader() {
   };
 
   const handleUser = () => {
-    router.push("/dashboard/account-settings");
+    router.push(`/creator/${user.uid}`);
   };  
 
   return <Fragment>

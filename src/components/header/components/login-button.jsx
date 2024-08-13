@@ -22,7 +22,7 @@ export default function LoginCartButtons({
   };
 
   const handleRedirect = () => {
-    router.push("/dashboard/account-settings");
+    router.push(`/creator/${user.uid}`);
   };
 
   return <div>
