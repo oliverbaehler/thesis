@@ -1,0 +1,1 @@
+export { default as CollectionDetailsPageView } from "./collection-details";
