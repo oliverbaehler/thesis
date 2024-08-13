@@ -28,7 +28,8 @@ import UserProfile from "./UserProfile";
 import ProjectChart from "./ProjectChart";
 import AccountSetting from "./AccountSetting";
 import AdminEcommerce from "./AdminEcommerce";
-export default {
+
+const modules = {
   Apps,
   Chat,
   Shoe,
@@ -60,3 +61,5 @@ export default {
   AdminEcommerce,
   AccountSetting
 };
+
+export default modules;

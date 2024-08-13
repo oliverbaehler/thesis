@@ -46,7 +46,7 @@ export default function EditCollectionPageView() {
     } else {
       router.push("/dashboard/collections/create");
     }
-  }, [slug]);
+  }, [router, slug, user]);
 
   if (loading) {
     return <div>Loading...</div>; // Show a loading state while fetching data

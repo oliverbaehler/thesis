@@ -92,7 +92,7 @@ export default function ProductRow({
     } catch (error) {
       console.error("Error deleting product: ", error);
     }
-  }, [id, collectionId, router]);
+  }, [id, collectionId, router, user]);
 
 
 

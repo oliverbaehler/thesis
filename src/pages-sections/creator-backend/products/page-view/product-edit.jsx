@@ -46,7 +46,7 @@ export default function EditProductPageView() {
     } else {
       router.push("/dashboard/products/create");
     }
-  }, [slug]);
+  }, [router, slug, user]);
 
   if (loading) {
     return <div>Loading...</div>; // Show a loading state while fetching data

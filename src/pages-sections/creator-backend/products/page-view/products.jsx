@@ -76,7 +76,7 @@ export default function ProductsPageView({}) {
     };
 
     fetchProducts();
-  }, []);
+  }, [user]);
 
   const filteredProducts = productList.map(item => ({
     id: item.id,
