@@ -51,3 +51,30 @@ exports.updateItemsOnUserChange = functions.firestore
       return null;
     });
 
+
+// Update Collection Name in all products
+
+exports.updateProductsOnCollectionNameChange = functions.firestore
+  .document('collections/{collectionId}')
+  .onUpdate(async (change, context) => {
+    const newValue = change.after.data();
+    const previousValue = change.before.data();
+
+    // Check if the name has changed
+    if (newValue.name !== previousValue.name) {
+      const newCollectionName = newValue.name;
+      const collectionId = context.params.collectionId;
+
+      const productsRef = admin.firestore().collection('products');
+      const querySnapshot = await productsRef.where('collectionId', '==', collectionId).get();
+
+      // Create a batch to update all matching products
+      const batch = admin.firestore().batch();
+      querySnapshot.forEach((doc) => {
+        batch.update(doc.ref, { collectionName: newCollectionName });
+      });
+
+      await batch.commit();
+    }
+  });
+
