@@ -13,7 +13,7 @@ Documentation for the architecture of this project is released in a dedicated do
 
 Pariah is Open Source with Apache 2 license and any contribution is welcome. Read more about how to contribute in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
-## How to run
+## Development
 
 This project is built with Firebase and uses Firestore as a database. To get started, you need to have a Firebase project set up and the Firebase CLI installed on your computer. See the following instructions to set up your development environment.
 
@@ -95,6 +95,10 @@ rm -rf .firebase
 
 Contains relevant Github metadata and workflow configurations
 
-## `/docs`
+## `./src`
 
-Masterthesis FS 2024
+Nextjs Application Source-Code
+
+## `./functions`
+
+Firebase Cloud Functions
