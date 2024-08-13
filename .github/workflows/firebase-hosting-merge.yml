@@ -9,7 +9,6 @@ permissions:
   pull-requests: write
 jobs:
   build_and_preview:
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
     environment: production
     env:
@@ -27,19 +26,3 @@ jobs:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           projectId: ${{ vars.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
-      - name: Check if a comment with the preview URL already exists
-        id: check-comment
-        run: |
-          comments=$(gh pr view ${{ github.event.pull_request.number }} --json comments --jq '.comments[].body')
-          if echo "$comments" | grep -q "Preview URL"; then
-            echo "comment_exists=true" >> $GITHUB_ENV
-          else
-            echo "comment_exists=false" >> $GITHUB_ENV
-          fi
-
-      - name: Comment on PR with the Preview URL
-        if: env.comment_exists == 'false'
-        run: |
-          gh pr comment ${{ github.event.pull_request.number }} --body "🚀 Preview URL: ${{ steps.deploy.outputs.urls }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
