@@ -1,14 +1,11 @@
 name: Check Commit
 permissions: {}
-
 on:
-  push:
-    branches: [ "*" ]
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
 jobs:
   commit_lint:
     runs-on: ubuntu-20.04
