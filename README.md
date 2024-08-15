@@ -88,6 +88,24 @@ If you see older versions of the emulator, you can clear the cash. The only impl
 rm -rf .firebase
 ```
 
+## Testing
+
+
+
+### Load-Testing
+
+To execute the load tests, you need to have the following software installed on your computer:
+
+```
+brew install k6
+```
+
+Then execute
+
+```
+k6 run k6/stress.js
+```
+
 ### Structure
 
 
