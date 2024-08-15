@@ -14,7 +14,7 @@ import { Formik } from "formik";
 import * as yup from "yup"; 
 import { v4 as uuidv4 } from "uuid";
 import { db, storage } from "firebaseConfig";
-import { collection, doc, setDoc, getDocs, getDoc, query, where } from "firebase/firestore";
+import { collection, doc, updateDoc, setDoc, getDocs, getDoc, query, where } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, uploadString, deleteObject } from "firebase/storage";
 import { useAuth } from "contexts/SessionContext";
 
@@ -26,6 +26,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 import { UploadImageBox, StyledClear } from "../styles"; 
+import { updateSourceFile } from "typescript";
 
 // FORM FIELDS VALIDATION SCHEMA
 const VALIDATION_SCHEMA = yup.object().shape({
@@ -75,9 +76,12 @@ export default function CollectionForm({ initialData, collectionId }) {
       const userDocRef = doc(db, "users", user.uid);
       const userDoc = await getDoc(userDocRef);
       const userData = userDoc.data();
+      let extraData = {};
+      let update = true;
 
       if (!collectionId) {
         collectionId = uuidv4();
+        update = false;
       }
       const docRef = doc(db, "collections", collectionId);
 
@@ -86,8 +90,9 @@ export default function CollectionForm({ initialData, collectionId }) {
       const uploadedImageUrls = await uploadFiles(files.slice(1), collectionId, user.uid);
       const qr_code_url = generateQRCode(collectionId, user.uid);
 
-      await setDoc(docRef, {
+      const data = {
         ...values,
+        ...extraData,
         name: values.name,
         content: content || "",
         published: values.published,
@@ -96,8 +101,19 @@ export default function CollectionForm({ initialData, collectionId }) {
         createdBy: user.uid,
         createdByName: userData.displayName,
         createdAt: new Date(),
-        qr_code: qr_code_url || "",
-      });
+        qr_code: qr_code_url || ""
+      };
+
+      console.log(data)
+
+      if (update) {
+        await updateDoc(docRef, data);
+      } else {
+        await setDoc(docRef, {
+          ...data,
+          userLikes: []
+        });
+      }
 
       router.push(`/dashboard/collections/${collectionId}`);
 
