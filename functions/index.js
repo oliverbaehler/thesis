@@ -2,6 +2,10 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
 const db = admin.firestore();
+const {onUserItemCreated} = require("./storage");
+
+// Handle Storage Items
+exports.onUserItemCreated = onUserItemCreated;
 
 // Updates the CreatorName in all collections and products
 exports.updateItemsOnUserChange = functions.firestore
@@ -33,8 +37,9 @@ exports.updateItemsOnUserChange = functions.firestore
       const batch = db.batch();
       collectionSnap.forEach((doc) => {
         const docRef = collectionsRef.doc(doc.id);
-        console.log("Updating collection:", doc.id, "with new creator name:", newCreatorName);
-        batch.update(docRef, { createdByName: newCreatorName });
+        console.log("Updating collection:", doc.id,
+            "with new creator name:", newCreatorName);
+        batch.update(docRef, {createdByName: newCreatorName});
       });
 
       // Update Products
@@ -56,28 +61,36 @@ exports.updateItemsOnUserChange = functions.firestore
 
 
 // Update Collection Name in all products
-
-exports.updateProductsOnCollectionNameChange = functions.firestore
-  .document('collections/{collectionId}')
-  .onUpdate(async (change, context) => {
-    const newValue = change.after.data();
-    const previousValue = change.before.data();
-
-    // Check if the name has changed
-    if (newValue.name !== previousValue.name) {
-      const newCollectionName = newValue.name;
+exports.handleCollectionEvents = functions.firestore
+    .document("collections/{collectionId}")
+    .onUpdate(async (change, context) => {
+      const newValue = change.after.data();
+      const previousValue = change.before.data();
       const collectionId = context.params.collectionId;
 
-      const productsRef = admin.firestore().collection('products');
-      const querySnapshot = await productsRef.where('collectionId', '==', collectionId).get();
+      const productsRef = admin.firestore().collection("products");
+      const querySnapshot = await productsRef.where("collectionId",
+          "==", collectionId).get();
 
-      // Create a batch to update all matching products
       const batch = admin.firestore().batch();
-      querySnapshot.forEach((doc) => {
-        batch.update(doc.ref, { collectionName: newCollectionName });
-      });
 
-      await batch.commit();
-    }
-  });
+      // Check if the name has changed and update it in all related products
+      if (newValue.name !== previousValue.name) {
+        const newCollectionName = newValue.name;
+        querySnapshot.forEach((doc) => {
+          batch.update(doc.ref, {collectionName: newCollectionName});
+        });
+      }
 
+      // Update publish status for related projects
+      if (newValue.published === false && previousValue.published !== false) {
+        querySnapshot.forEach((doc) => {
+          batch.update(doc.ref, {published: false});
+        });
+      }
+
+      // Commit the batch if there are any updates
+      if (!batch.isEmpty) {
+        await batch.commit();
+      }
+    });

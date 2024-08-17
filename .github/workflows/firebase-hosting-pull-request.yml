@@ -17,13 +17,6 @@ jobs:
         uses: actions/setup-node@26961cf329f22f6837d5f54c3efd76b480300ace
         with:
           node-version: '18'
-      - name: Cache Node.js modules
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
       - name: Install dependencies
         run: npm ci
       - name: Run Lint
@@ -45,13 +38,6 @@ jobs:
         uses: actions/setup-node@26961cf329f22f6837d5f54c3efd76b480300ace
         with:
           node-version: '18'
-      - name: Cache Node.js modules
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
       - name: Install dependencies
         run: npm ci
       - name: Install Firebase CLI
@@ -61,7 +47,6 @@ jobs:
       - name: Stop Firebase Emulators
         if: always()
         run: firebase emulators:stop
-
   build_and_preview:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest

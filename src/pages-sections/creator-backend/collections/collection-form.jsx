@@ -74,6 +74,8 @@ export default function CollectionForm({ initialData, collectionId }) {
       const userDoc = await getDoc(userDocRef);
       const userData = userDoc.data();
 
+      console.log("User data:", userData);
+
       if (!collectionId) {
         collectionId = uuidv4();
       }

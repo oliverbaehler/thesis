@@ -6,3 +6,5 @@ export const layoutConstant = {
   mobileHeaderHeight: 64,
   grocerySidenavWidth: 280
 };
+
+const USER_STORAGE_LIMIT = 5 * 1024 * 1024 * 1024;

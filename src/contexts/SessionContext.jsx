@@ -13,6 +13,7 @@ export const SessionProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        console.log(user)
         setUser({
           uid: user.uid,
           email: user.email,
@@ -20,6 +21,7 @@ export const SessionProvider = ({ children }) => {
           photoURL: user.photoURL,
         });
       } else {
+        console.log("WDYM")
         setUser(null);
       }
       setLoading(false);
