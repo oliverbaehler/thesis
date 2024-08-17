@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { db } from "firebaseConfig";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 import googleLogo from "../../../../public/assets/images/icons/google-1.svg";
 
@@ -22,12 +22,24 @@ const GoogleSignIn = () => {
     
         // Store user information in Firestore
         const userRef = doc(db, "users", user.uid);
-        await setDoc(userRef, {
-          uid: user.uid,
-          email: user.email,
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-        }, { merge: true });
+        const userDoc = await getDoc(userRef);
+  
+        if (!userDoc.exists()) {
+          await setDoc(userRef, {
+            uid: user.uid,
+            email: user.email,
+            photoURL: user.photoURL,
+            displayName: user.displayName,
+            role: 'creator',
+          });
+        } else {
+          // If the user already exists, merge the basic info without overwriting creator_name
+          await setDoc(userRef, {
+            uid: user.uid,
+            email: user.email,
+            photoURL: user.photoURL,
+          }, { merge: true });
+        }
     
         console.log('Successfully signed in with Google:', user);
         

@@ -18,7 +18,7 @@ import { H1, H2, H3, H6 } from "components/Typography";
 import { FlexBox, FlexRowCenter } from "components/flex-box";  
 
 import { db } from "firebaseConfig";
-import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
 
 
 // ================================================================
@@ -33,7 +33,6 @@ export default function CollectionIntro({
     thumbnail,
     createdBy,
     creatorName,
-    userLikes = []
   } = collection || {};
 
   const { user } = useAuth();
@@ -41,28 +40,33 @@ export default function CollectionIntro({
   const [selectedImage, setSelectedImage] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
 
-  // Fetch if the user has liked the collection
   useEffect(() => {
-    if (user && userLikes.includes(user.uid)) {
-      setIsLiked(true);
-    }
-  }, [user, userLikes]);
-
+    const checkIfLiked = async () => {
+      if (user) {
+        const likeDocRef = doc(db, "collections", id, "likes", user.uid);
+        const likeDoc = await getDoc(likeDocRef);
+        if (likeDoc.exists()) {
+          setIsLiked(true);
+        }
+      }
+    };
+  
+    checkIfLiked();
+  }, [user, id]);
+  
   const handleLikeToggle = async () => {
-    const collectionDocRef = doc(db, "collections", id);
+    const likeDocRef = doc(db, "collections", id, "likes", user.uid);
 
+    // Remove or add Like to subcollection
     if (isLiked) {
-      // Remove the like
-      await updateDoc(collectionDocRef, {
-        userLikes: arrayRemove(user.uid)
-      });
+      await deleteDoc(likeDocRef);
     } else {
-      // Add the like
-      await updateDoc(collectionDocRef, {
-        userLikes: arrayUnion(user.uid)
+      // Like timestamp for sorting
+      await setDoc(likeDocRef, {
+        likedAt: new Date(),
       });
     }
-
+  
     setIsLiked(!isLiked);
   };
 

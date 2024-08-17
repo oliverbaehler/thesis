@@ -1,3 +1,4 @@
+import { Image } from 'next/image';
 import { useState } from 'react';
 import { QRCode } from 'react-qrcode-logo';
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -122,7 +123,7 @@ export default function QRCodeCustomizer({ open, anchorEl, handleClose, popup_id
                   Upload Logo
                   <input type="file" hidden onChange={handleLogoUpload} />
                 </Button>
-                {logoUrl && <img src={logoUrl} alt="QR Code Logo Preview" style={{ width: 100, marginTop: '10px' }} />}
+                {logoUrl && <Image src={logoUrl} alt="QR Code Logo Preview" style={{ width: 100, marginTop: '10px' }} />}
               </Box>
         
               <Box sx={{ mt: 2 }}>

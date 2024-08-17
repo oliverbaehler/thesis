@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import Typography from "@mui/material/Typography";
 
 import { useAuth } from "contexts/SessionContext";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDoc, getDocs, doc } from "firebase/firestore";
 import { db } from "firebaseConfig";
 
 
@@ -20,30 +20,47 @@ export default function WishListPageView(props) {
   useEffect(() => {
     const fetchLikedItems = async () => {
       try {
+        const likedCollections = [];
+        const likedProducts = [];
+    
+        // Fetch all collections
         const collectionsQuery = query(
           collection(db, "collections"),
-          where("userLikes", "array-contains", user.uid),
           where("published", "==", true)
         );
         const collectionsSnapshot = await getDocs(collectionsQuery);
-        const likedCollections = collectionsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          type: "collections",
-          ...doc.data()
-        }));
-
+    
+        for (const docSnapshot of collectionsSnapshot.docs) {
+          const likeDocRef = doc(db, `collections/${docSnapshot.id}/likes`, user.uid);
+          const likeDocSnapshot = await getDoc(likeDocRef);
+          if (likeDocSnapshot.exists()) {
+            likedCollections.push({
+              id: docSnapshot.id,
+              type: "collections",
+              ...docSnapshot.data(),
+            });
+          }
+        }
+    
+        // Fetch all products
         const productsQuery = query(
           collection(db, "products"),
-          where("userLikes", "array-contains", user.uid),
           where("published", "==", true)
         );
         const productsSnapshot = await getDocs(productsQuery);
-        const likedProducts = productsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          type: "products",
-          ...doc.data()
-        }));
-
+    
+        for (const docSnapshot of productsSnapshot.docs) {
+          const likeDocRef = doc(db, `products/${docSnapshot.id}/likes`, user.uid);
+          const likeDocSnapshot = await getDoc(likeDocRef);
+          if (likeDocSnapshot.exists()) {
+            likedProducts.push({
+              id: docSnapshot.id,
+              type: "products",
+              ...docSnapshot.data(),
+            });
+          }
+        }
+    
         const combinedItems = [...likedCollections, ...likedProducts];
         setProducts(combinedItems);
       } catch (error) {

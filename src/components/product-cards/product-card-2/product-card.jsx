@@ -39,12 +39,8 @@ export default function ProductCard2({
           <LazyImage
             src={imgUrl}
             alt={title}
-            layout="fill" // Ensures the image fills the container
-            objectFit="cover" // Ensures the image covers the container
-            sx={{
-              width: "100%",
-              height: "100%",
-            }}
+            width={100}
+            height={100}
           />
         </HoverBox>
       </Link>
