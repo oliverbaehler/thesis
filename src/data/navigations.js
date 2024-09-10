@@ -15,6 +15,14 @@ import PlantPot from "icons/PlantPot";
 import MotorBike from "icons/MotorBike";
 import TeddyBear from "icons/TeddyBear";
 import Microphone from "icons/Microphone";
+
+/**
+ * Category menus configuration, each containing an icon, title, href, and a nested structure for subcategories.
+ * Some categories have a mega menu component and an offer configuration, which includes an image and link.
+ *
+ * @constant
+ * @type {Array<Object>}
+ */
 export const categoryMenus = [{
   icon: Dress,
   title: "Fashion",

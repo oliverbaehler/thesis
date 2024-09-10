@@ -1,3 +1,4 @@
+// Importing modules for various features in the application
 import Apps from "./Apps";
 import Chat from "./Chat";
 import Shoe from "./Shoe";
@@ -29,6 +30,16 @@ import ProjectChart from "./ProjectChart";
 import AccountSetting from "./AccountSetting";
 import AdminEcommerce from "./AdminEcommerce";
 
+/**
+ * Object that consolidates all feature modules into a single exportable entity.
+ * Each key corresponds to a specific feature, and the associated value is the respective module/component.
+ *
+ * This structure allows for easy access to multiple features within the application
+ * by simply importing the `modules` object, making the codebase more modular and manageable.
+ * 
+ * @constant
+ * @type {Object}
+ */
 const modules = {
   Apps,
   Chat,

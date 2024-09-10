@@ -1,0 +1,42 @@
+[
+  {
+    "name": "getDateDifference",
+    "filePath": "src/lib/index.js",
+    "lines": [
+      {
+        "lineNumber": 2,
+        "line": "/**"
+      },
+      {
+        "lineNumber": 3,
+        "line": " * GET THE DIFFERENCE DATE FORMAT"
+      },
+      {
+        "lineNumber": 4,
+        "line": " * @param  DATE | NUMBER | STRING"
+      },
+      {
+        "lineNumber": 5,
+        "line": " * @returns FORMATTED DATE STRING"
+      },
+      {
+        "lineNumber": 6,
+        "line": " */"
+      },
+      {
+        "lineNumber": 7,
+        "line": ""
+      },
+      {
+        "lineNumber": 8,
+        "line": "function getDateDifference(date) {"
+      }
+    ],
+    "codeParams": [
+      "date"
+    ],
+    "docParams": [
+      "DATE"
+    ]
+  }
+]

@@ -1,9 +1,15 @@
 import Box from "@mui/material/Box";
 import styled from "@mui/material/styles/styled";
 import { FlexBetween } from "components/flex-box";
-export const StyledCard = styled(Box)(({
-  theme
-}) => ({
+
+/**
+ * Styled component for the card layout. It handles card hover effects, border radius, and positioning.
+ * The card applies a shadow on hover and displays hidden elements like controllers.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const StyledCard = styled(Box)(({ theme }) => ({
   height: "100%",
   margin: "auto",
   borderRadius: 0,
@@ -21,17 +27,29 @@ export const StyledCard = styled(Box)(({
     }
   }
 }));
-export const ImgBox = styled("div")(({
-  theme
-}) => ({
+
+/**
+ * Styled component for wrapping the image inside the card.
+ * It ensures the image section has padding and a background color.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const ImgBox = styled("div")(({ theme }) => ({
   overflow: "hidden",
   position: "relative",
   padding: "0 40px 20px 40px",
   background: theme.palette.primary[100]
 }));
-export const ItemController = styled(FlexBetween)(({
-  theme
-}) => ({
+
+/**
+ * Styled component for the item controller that appears on hover.
+ * It handles hover effects, including transitions and interaction styles for child elements like icons.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const ItemController = styled(FlexBetween)(({ theme }) => ({
   width: 35,
   right: 15,
   height: 120,
@@ -61,6 +79,13 @@ export const ItemController = styled(FlexBetween)(({
     color: theme.palette.grey[600]
   }
 }));
+
+/**
+ * Styled component for the content wrapper inside the card.
+ * It centers the content vertically and horizontally, and handles text overflow for the title and categories.
+ *
+ * @component
+ */
 export const ContentWrapper = styled("div")({
   display: "flex",
   alignItems: "center",

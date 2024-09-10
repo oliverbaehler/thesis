@@ -28,7 +28,7 @@ export default function LoginCartButtons({
   return <div>
       {user ? (
         <>
-          <CustomButton href="/dashboard" startIcon={<Globe sx={{ color: "grey.900" }} />}>
+          <CustomButton href="/dashboard" className="dashboard-btn" startIcon={<Globe sx={{ color: "grey.900" }} />}>
             Dashboard
           </CustomButton>
           <IconButton onClick={handleRedirect}>
@@ -40,7 +40,7 @@ export default function LoginCartButtons({
           </IconButton>
         </>
       ) : (
-        <CustomButton onClick={toggleDialog} startIcon={<LoginIcon sx={{
+        <CustomButton onClick={toggleDialog} className="login-btn" startIcon={<LoginIcon sx={{
           color: "grey.900"
         }} />}>
             Login

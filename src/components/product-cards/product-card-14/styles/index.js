@@ -1,9 +1,15 @@
 "use client";
 
 import styled from "@mui/material/styles/styled";
-export const PriceText = styled("p")(({
-  theme
-}) => ({
+
+/**
+ * Styled component for displaying the price text. The main price is bold, centered, and has a primary color.
+ * A `.base-price` class is included for displaying an original price with a strikethrough, indicating a discount.
+ * 
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const PriceText = styled("p")(({ theme }) => ({
   gap: 8,
   fontSize: 17,
   fontWeight: 700,
@@ -14,16 +20,21 @@ export const PriceText = styled("p")(({
   color: theme.palette.primary.main,
   ".base-price": {
     fontSize: 15,
-    
-// marginLeft: 8,
     fontWeight: 600,
     textDecoration: "line-through",
     color: theme.palette.grey[600]
   }
 }));
-export const Content = styled("div")(({
-  theme
-}) => ({
+
+/**
+ * Styled component for wrapping content in a card or section. This includes a button group 
+ * with a primary background color, along with individual button styles. It aligns content 
+ * in the center and manages overflow for the button group.
+ * 
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const Content = styled("div")(({ theme }) => ({
   textAlign: "center",
   ".button-group": {
     color: "white",

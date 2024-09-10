@@ -1,8 +1,14 @@
 import styled from "@mui/material/styles/styled";
 import BazaarCard from "components/BazaarCard";
-export const StyledBazaarCard = styled(BazaarCard)(({
-  theme
-}) => ({
+
+/**
+ * Styled component for the Bazaar card. It uses a flex layout, rounded borders, and transitions 
+ * for hover effects like box shadows. It includes a `.controller` class for hover-based movement.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const StyledBazaarCard = styled(BazaarCard)(({ theme }) => ({
   margin: "auto",
   height: "100%",
   display: "flex",
@@ -19,9 +25,15 @@ export const StyledBazaarCard = styled(BazaarCard)(({
     }
   }
 }));
-export const ImageWrapper = styled("div")(({
-  theme
-}) => ({
+
+/**
+ * Styled component for wrapping the image inside the Bazaar card. 
+ * It handles responsiveness by changing the display style based on the screen size.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const ImageWrapper = styled("div")(({ theme }) => ({
   height: "100%",
   textAlign: "center",
   position: "relative",
@@ -30,16 +42,28 @@ export const ImageWrapper = styled("div")(({
     display: "block"
   }
 }));
-export const ImageBox = styled("div")(({
-  theme
-}) => ({
+
+/**
+ * Styled component for the image box inside the Bazaar card. 
+ * It applies padding and includes a bottom border to separate the image from other content.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const ImageBox = styled("div")(({ theme }) => ({
   padding: "3rem",
   height: "100%",
   borderBottom: `1px solid ${theme.palette.grey[300]}`
 }));
-export const HoverWrapper = styled("div")(({
-  theme
-}) => ({
+
+/**
+ * Styled component for the hover wrapper, which contains icons or action buttons.
+ * It transitions into view from the right when the card is hovered.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const HoverWrapper = styled("div")(({ theme }) => ({
   top: 0,
   bottom: 0,
   width: 35,
@@ -84,6 +108,13 @@ export const HoverWrapper = styled("div")(({
     color: theme.palette.grey[600]
   }
 }));
+
+/**
+ * Styled component for the content wrapper inside the Bazaar card. 
+ * It manages padding and handles text overflow for elements like title and categories.
+ *
+ * @component
+ */
 export const ContentWrapper = styled("div")({
   padding: "1rem",
   "& .title, & .categories": {
@@ -92,9 +123,15 @@ export const ContentWrapper = styled("div")({
     textOverflow: "ellipsis"
   }
 });
-export const ButtonBox = styled("div")(({
-  theme
-}) => ({
+
+/**
+ * Styled component for a button box inside the Bazaar card. 
+ * It aligns buttons horizontally, ensuring spacing between them, and styles the buttons with primary theme colors.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const ButtonBox = styled("div")(({ theme }) => ({
   gap: 10,
   display: "flex",
   marginTop: "15px",

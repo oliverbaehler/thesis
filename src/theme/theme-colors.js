@@ -1,28 +1,34 @@
-
+// =================================================================
+// This file defines a palette of colors used throughout the application.
+// Each color group contains shades from light to dark, including a "main" color
+// for easier use within the theme system.
 // =================================================================
 
-// =================================================================
+/**
+ * Shades of grey used in the application, from light to dark.
+ * Used for text, borders, backgrounds, and other UI elements.
+ * 
+ * @constant
+ * @type {Object}
+ */
 export const grey = {
-  900: "#2B3445",
-  
-// Main Text
-  800: "#373F50",
-  
-// Paragraph
+  900: "#2B3445",  // Main Text
+  800: "#373F50",  // Paragraph
   700: "#4B566B",
-  600: "#7D879C",
-  
-// Low Priority form Title/Text
+  600: "#7D879C",  // Low Priority form Title/Text
   500: "#AEB4BE",
-  400: "#DAE1E7",
-  
-// Border
+  400: "#DAE1E7",  // Border
   300: "#E3E9EF",
-  200: "#F3F5F9",
-  
-// Line Stroke
+  200: "#F3F5F9",  // Line Stroke
   100: "#F6F9FC"
 };
+
+/**
+ * Shades of primary color used for key UI elements and highlights.
+ * 
+ * @constant
+ * @type {Object}
+ */
 export const primary = {
   100: "#FCE9EC",
   200: "#F8C7CF",
@@ -34,6 +40,13 @@ export const primary = {
   800: "#DF2E44",
   900: "#D91F33"
 };
+
+/**
+ * Shades of secondary color used for accents and secondary UI elements.
+ * 
+ * @constant
+ * @type {Object}
+ */
 export const secondary = {
   100: "#e8e8ee",
   200: "#b9bacb",
@@ -47,6 +60,13 @@ export const secondary = {
   main: "#0F3460",
   dark: "#0c0e30"
 };
+
+/**
+ * Shades of error color used for error states and warnings.
+ * 
+ * @constant
+ * @type {Object}
+ */
 export const error = {
   100: "#FFEAEA",
   200: "#FFCBCB",
@@ -59,6 +79,13 @@ export const error = {
   900: "#FF2929",
   main: "#E94560"
 };
+
+/**
+ * Shades of success color used for success states and confirmations.
+ * 
+ * @constant
+ * @type {Object}
+ */
 export const success = {
   100: "#E7F9ED",
   200: "#C2F1D1",
@@ -71,6 +98,13 @@ export const success = {
   900: "#0b7724",
   main: "rgb(51, 208, 103)"
 };
+
+/**
+ * Shades of blue used for information states or neutral elements.
+ * 
+ * @constant
+ * @type {Object}
+ */
 export const blue = {
   50: "#f3f5f9",
   100: "#DBF0FE",
@@ -85,6 +119,13 @@ export const blue = {
   main: "#4E97FD",
   contrastText: "#FFFFFF"
 };
+
+/**
+ * Shades of marron color used for certain highlights and UI accents.
+ * 
+ * @constant
+ * @type {Object}
+ */
 export const marron = {
   50: "#f3f5f9",
   100: "#F6F2ED",
@@ -97,6 +138,13 @@ export const marron = {
   900: "#5B162F",
   main: "#BE7374"
 };
+
+/**
+ * Shades of paste (pastel green) used for softer UI elements and highlights.
+ * 
+ * @constant
+ * @type {Object}
+ */
 export const paste = {
   50: "#F5F5F5",
   100: "#DDFBF1",
@@ -110,6 +158,13 @@ export const paste = {
   main: "#4BB4B4",
   contrastText: "#FFFFFF"
 };
+
+/**
+ * Shades of orange used for warning or attention-grabbing elements.
+ * 
+ * @constant
+ * @type {Object}
+ */
 export const orange = {
   50: "#FEE9D2",
   100: "#FDD8AF",
@@ -125,6 +180,13 @@ export const orange = {
   dark: "#C86904",
   light: "#FDD8AF"
 };
+
+/**
+ * Shades of bluish color used for accentuating UI elements.
+ * 
+ * @constant
+ * @type {Object}
+ */
 export const bluish = {
   100: "#DDFBF1",
   200: "#BDF7E8",
@@ -139,21 +201,57 @@ export const bluish = {
   dark: "#36929A",
   light: "#BDF7E8"
 };
+
+/**
+ * Shades of warning color used for warnings and alerts.
+ * 
+ * @constant
+ * @type {Object}
+ */
 export const warning = {
   100: "#FFF8E5",
   main: "#FFCD4E",
   dark: "#FA8C16",
   contrastText: "#FFFFFF"
 };
+
+/**
+ * Gold color used for premium or high-priority elements.
+ * 
+ * @constant
+ * @type {Object}
+ */
 export const gold = {
   main: "#BB9C36"
 };
+
+/**
+ * Dark color used for general dark mode elements.
+ * 
+ * @constant
+ * @type {Object}
+ */
 export const dark = {
   main: "#1F2937"
 };
+
+/**
+ * White color used for backgrounds or text in dark mode.
+ * 
+ * @constant
+ * @type {Object}
+ */
 export const white = {
   main: "#fff"
 };
+
+/**
+ * Collection of theme colors used throughout the application.
+ * Contains references to individual color objects such as primary, secondary, error, and success.
+ * 
+ * @constant
+ * @type {Object}
+ */
 export const themeColors = {
   dark,
   grey,

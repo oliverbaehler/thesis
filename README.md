@@ -88,6 +88,26 @@ If you see older versions of the emulator, you can clear the cash. The only impl
 rm -rf .firebase
 ```
 
+### Node Version
+
+If you have newer or older Node.js Versions locally, you can use [`n`](https://www.npmjs.com/package/n) to switch between versions. Install it with:
+
+```shell
+npm install -g n
+```
+
+Use the given version:
+
+```shell
+n run node/20.12.2
+
+
+Welcome to Node.js v20.12.2.
+Type ".help" for more information.
+```
+
+A known version to work (also supported by firebase-cli) is `v20.12.2`
+
 ### Structure
 
 
@@ -102,7 +122,16 @@ Contains relevant Github metadata and workflow configurations
 
 Additional Tools which help with the development of this project.
 
-### Route visualizer
+### Esdoc
 
+To generate documentation for the project, you can use `esdoc`. Install it with:
 
-Masterthesis FS 2024
+```shell
+npm install -g esdoc
+```
+
+And run it with:
+
+```shell
+esdoc
+```

@@ -2,11 +2,16 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import styled from "@mui/material/styles/styled"; 
 // GLOBAL CUSTOM COMPONENTS
-
 import { Span } from "components/Typography";
-export const StyledCard = styled(Box)(({
-  theme
-}) => ({
+
+/**
+ * Styled component for a card layout. It manages the card's height, positioning, and hover effects.
+ * The card has an outline, and a box shadow appears when hovered.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const StyledCard = styled(Box)(({ theme }) => ({
   height: "100%",
   margin: "auto",
   borderRadius: 0,
@@ -18,9 +23,15 @@ export const StyledCard = styled(Box)(({
     boxShadow: theme.shadows[2]
   }
 }));
-export const ImgBox = styled("div")(({
-  theme
-}) => ({
+
+/**
+ * Styled component for the image box inside the card. It sets the height and padding for the image section
+ * and adds a background color. The `.img-wrapper` class ensures the image is centered.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const ImgBox = styled("div")(({ theme }) => ({
   height: 230,
   marginBottom: "5rem",
   padding: "60px 40px 20px 40px",
@@ -30,6 +41,12 @@ export const ImgBox = styled("div")(({
     margin: "auto"
   }
 }));
+
+/**
+ * Styled component for wrapping the card content. It sets the layout and spacing for the content inside the card.
+ *
+ * @component
+ */
 export const ContentWrapper = styled("div")({
   gap: 8,
   display: "flex",
@@ -38,9 +55,15 @@ export const ContentWrapper = styled("div")({
     flex: "1 1 0"
   }
 });
-export const StatusChipBox = styled("div")(({
-  theme
-}) => ({
+
+/**
+ * Styled component for a status chip box that is positioned at the top-right of the card.
+ * It displays the status as a label with triangular borders.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const StatusChipBox = styled("div")(({ theme }) => ({
   width: 40,
   height: 42,
   zIndex: 11,
@@ -68,6 +91,13 @@ export const StatusChipBox = styled("div")(({
     borderRight: `20px solid ${theme.palette.primary.main}`
   }
 }));
+
+/**
+ * Styled component for the status chip label inside the `StatusChipBox`. 
+ * It ensures that the status text is centered and aligned properly inside the chip.
+ *
+ * @component
+ */
 export const StatusChip = styled(Span)({
   color: "#fff",
   height: "100%",
@@ -75,9 +105,15 @@ export const StatusChip = styled(Span)({
   alignItems: "center",
   justifyContent: "center"
 });
-export const ColorBox = styled("div")(({
-  theme
-}) => ({
+
+/**
+ * Styled component for displaying color options inside the card. 
+ * It aligns the color circles and adds a hover effect to each.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const ColorBox = styled("div")(({ theme }) => ({
   gap: 8,
   display: "flex",
   padding: "10px 5px",
@@ -91,9 +127,15 @@ export const ColorBox = styled("div")(({
     }
   }
 }));
-export const StyledButton = styled(Button)(({
-  theme
-}) => ({
+
+/**
+ * Styled button component used inside the card. It has a hover effect where the button's 
+ * background and border change to the primary color.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const StyledButton = styled(Button)(({ theme }) => ({
   padding: "4px",
   borderRadius: 0,
   transition: "all 0.3s",

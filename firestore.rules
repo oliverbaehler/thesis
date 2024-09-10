@@ -34,9 +34,14 @@ service cloud.firestore {
       }
     }
 
+    //match /users/{userId} {
+    //  // Allow anyone to read, create, update, and delete documents in the users collection
+    //  allow read, create, update, delete: if true;
+    //}
+
     match /users/{userId} {
-        allow read: if request.auth != null;
-        allow create: if request.auth != null;
+        allow read, create: if request.auth != null;
+        allow create: if request.auth != null && request.auth.uid == userId;
         allow update: if request.auth != null && request.auth.uid == userId && !('storageSpaceUsed' in request.resource.data);
     }
   }

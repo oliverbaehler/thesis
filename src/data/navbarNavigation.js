@@ -1,6 +1,12 @@
 import categoriesMegaMenu from "./categoriesMegaMenu"; 
-// MEGA-MENU DATA
 
+/**
+ * Mega menu configurations for various sections such as Home, User Account, Vendor Account, and Sale Page.
+ * Each section contains nested subcategories, URLs, and configurations for mega menus.
+ *
+ * @constant
+ * @type {Array<Array<Object>>}
+ */
 const megaMenus = [[{
   title: "Home",
   child: [{

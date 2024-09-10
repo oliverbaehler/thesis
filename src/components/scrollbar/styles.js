@@ -2,9 +2,16 @@
 
 import { alpha, styled } from "@mui/material/styles";
 import SimpleBar from "simplebar-react";
-export const StyledScrollBar = styled(SimpleBar)(({
-  theme
-}) => ({
+
+/**
+ * Styled component for a custom scroll bar using `SimpleBar` and MUI's styling utilities.
+ * The scroll bar's appearance is customized, including colors, opacity, and size for both 
+ * vertical and horizontal tracks.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const StyledScrollBar = styled(SimpleBar)(({ theme }) => ({
   maxHeight: "100%",
   "& .simplebar-scrollbar": {
     "&.simplebar-visible:before": {

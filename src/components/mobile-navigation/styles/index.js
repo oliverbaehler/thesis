@@ -2,11 +2,17 @@ import Drawer from "@mui/material/Drawer";
 import styled from "@mui/material/styles/styled";
 import { NavLink } from "components/nav-link";
 import { layoutConstant } from "utils/constants"; 
+
 // STYLED COMPONENTS
 
-const Wrapper = styled("div")(({
-  theme
-}) => ({
+/**
+ * Wrapper for the mobile navigation bar. It becomes visible and takes up the full width of the viewport
+ * on screen sizes smaller than 900px. Positioned at the bottom of the screen.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+const Wrapper = styled("div")(({ theme }) => ({
   left: 0,
   right: 0,
   bottom: 0,
@@ -22,6 +28,13 @@ const Wrapper = styled("div")(({
     width: "100vw"
   }
 }));
+
+/**
+ * Styled component for navigation links used in the mobile navigation bar.
+ * It arranges the link content vertically and centers it.
+ *
+ * @component
+ */
 const StyledNavLink = styled(NavLink)({
   flex: "1 1 0",
   display: "flex",
@@ -30,9 +43,15 @@ const StyledNavLink = styled(NavLink)({
   flexDirection: "column",
   justifyContent: "center"
 });
-const StyledBox = styled("div")(({
-  theme
-}) => ({
+
+/**
+ * Styled box component for clickable elements in the mobile navigation bar.
+ * It includes hover effects and centers its content vertically and horizontally.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+const StyledBox = styled("div")(({ theme }) => ({
   flex: "1 1 0",
   display: "flex",
   fontSize: "13px",
@@ -45,9 +64,15 @@ const StyledBox = styled("div")(({
     color: `${theme.palette.primary.main} !important`
   }
 }));
-const StyledDrawer = styled(Drawer)(({
-  theme
-}) => ({
+
+/**
+ * Styled component for the MUI Drawer used in the sidebar.
+ * It defines the size and shadow styling for the drawer and its paper component.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+const StyledDrawer = styled(Drawer)(({ theme }) => ({
   width: 250,
   zIndex: 1501,
   flexShrink: 0,
@@ -56,13 +81,20 @@ const StyledDrawer = styled(Drawer)(({
     boxSizing: "border-box",
     boxShadow: theme.shadows[2]
   }
-})); 
-// common icon component style
+}));
 
+/**
+ * Common icon style for elements in the navigation bar, ensuring that icons
+ * are centered and positioned consistently.
+ *
+ * @constant
+ * @type {Object}
+ */
 const iconStyle = {
   display: "flex",
   marginBottom: "4px",
   alignItems: "center",
   justifyContent: "center"
 };
+
 export { Wrapper, StyledBox, StyledNavLink, StyledDrawer, iconStyle };
