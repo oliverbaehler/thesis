@@ -32,3 +32,4 @@ jobs:
         env:
             FIREBASE_AUTH_EMULATOR_HOST: 'localhost:9099'
             FIRESTORE_EMULATOR_HOST: 'localhost:8080'
+            GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
