@@ -81,7 +81,6 @@ export default function ProductForm({ initialData, productId }) {
         });
       }
       setFiles(filesArray);
-      console.log(filesArray)
     }
   }, [initialData]);
 

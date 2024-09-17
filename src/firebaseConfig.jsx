@@ -59,13 +59,5 @@ const db = getFirestore(app);
  */
 const storage = getStorage(app);
 
-/**
- * If the Firebase Auth Emulator is enabled (via environment variable), connect to the emulator.
- */
-if (process.env.NEXT_PUBLIC_FIREBASE_AUTH_EMULATOR_HOST) {
-  const emulatorHost = process.env.NEXT_PUBLIC_FIREBASE_AUTH_EMULATOR_HOST;
-  connectAuthEmulator(auth, `http://${emulatorHost}`);
-}
-
 // Export Firebase utilities and methods
 export { app, db, auth, storage, signInWithPopup, doc, setDoc };

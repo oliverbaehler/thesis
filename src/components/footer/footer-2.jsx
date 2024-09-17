@@ -1,18 +1,9 @@
 import Link from "next/link";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid"; 
-// LOCAL CUSTOM COMPONENTS
-
-import AppStore from "./components/app-store";
-import SocialLinks from "./components/social-links"; 
-// GLOBAL CUSTOM COMPONENTS
 
 import BazaarImage from "components/BazaarImage";
 import { Paragraph } from "components/Typography"; 
-// DATA
-
-import { CUSTOMER_CARE_LINKS } from "./data"; 
-// STYLED COMPONENTS
 
 import { StyledFooter, StyledLink } from "./styles";
 export default function Footer2() {
@@ -35,7 +26,6 @@ export default function Footer2() {
           <Paragraph mb={2.5} color="grey.500" maxWidth="370px">
             <strong>Note</strong>: This is a demo website. The products are not for sale nor is this data production-ready. Currently only at prototype stage 
           </Paragraph>
-          <AppStore />
         </Grid>
       </Grid>
     </StyledFooter>;

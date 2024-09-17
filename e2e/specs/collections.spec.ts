@@ -17,7 +17,7 @@ test.describe('Collection Form Test', () => {
 
   test('should submit the form and save data to Firestore', async ({ page }) => {
     // Navigate to the form page
-    await page.goto('http://localhost:3000/dashboard/collections/new');
+    await page.goto('http://localhost:5002/dashboard/collections/new');
 
     // Fill in the form fields
     await page.fill('input[name="name"]', 'Test Collection');

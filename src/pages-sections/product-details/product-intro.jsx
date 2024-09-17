@@ -19,7 +19,7 @@ import { H1, H2, H3, H6 } from "components/Typography";
 import { FlexBox, FlexRowCenter } from "components/flex-box";  
 
 import { db } from "firebaseConfig";
-import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, collection } from "firebase/firestore";
+import { doc, getDoc, setDoc, deleteDoc, updateDoc, arrayUnion, arrayRemove, collection } from "firebase/firestore";
 
 // ================================================================
 export default function ProductIntro({

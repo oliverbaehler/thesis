@@ -55,7 +55,6 @@ export default function Section1() {
     fetchcollections();
   }, []);
 
-  console.log("Collections", collections)
   return <Container>
       <Heading title="Trending Collections" />
       <Grid container spacing={3}>
