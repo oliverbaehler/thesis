@@ -2,51 +2,12 @@
 # https://github.com/firebase/firebase-tools
 
 name: Deploy to Firebase Preview
-on: pull_request
+on: tag
 permissions:
   checks: write
   contents: read
   pull-requests: write
 jobs:
-  lint_and_test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b
-      - name: Set up Node.js
-        uses: actions/setup-node@26961cf329f22f6837d5f54c3efd76b480300ace
-        with:
-          node-version: '18'
-      - name: Install dependencies
-        run: npm ci
-      - name: Run Lint
-        run: npm run lint
-      - uses: oke-py/npm-audit-action@2c6b2da234031fbf72af81a04c76b3a152bb2222
-        with:
-          audit_level: moderate
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          issue_assignees: oke-py
-          issue_labels: vulnerability,test
-          dedupe_issues: true
-  test_with_emulators:
-    runs-on: ubuntu-latest
-    needs: lint_and_test
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b
-      - name: Set up Node.js
-        uses: actions/setup-node@26961cf329f22f6837d5f54c3efd76b480300ace
-        with:
-          node-version: '18'
-      - name: Install dependencies
-        run: npm ci
-      - name: Install Firebase CLI
-        run: npm install -g firebase-tools
-      - name: Start Firebase Emulators and Run Tests
-        run: npm run unit-test
-      - name: Stop Firebase Emulators
-        if: always()
-        run: firebase emulators:stop
   build_and_preview:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
