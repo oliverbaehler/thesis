@@ -40,7 +40,7 @@
         "jodit": "^4.2.27",
         "jodit-react": "^4.1.2",
         "lodash": "^4.17.21",
-        "next": "^14.2.5",
+        "next": "^14.2.12",
         "next-auth": "^4.24.7",
         "next-i18next": "^15.2.0",
         "next-qrcode": "^2.5.1",
