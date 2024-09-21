@@ -1,9 +1,16 @@
 "use client";
 
 import styled from "@mui/material/styles/styled";
-export const PriceText = styled("p")(({
-  theme
-}) => ({
+
+/**
+ * Styled component for displaying the main price text. It styles the price with a bold font weight
+ * and the primary color of the theme. It also includes a nested `.base-price` element for showing
+ * a strikethrough effect on the base price, indicating a discount.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const PriceText = styled("p")(({ theme }) => ({
   fontSize: 17,
   fontWeight: 700,
   color: theme.palette.primary.main,

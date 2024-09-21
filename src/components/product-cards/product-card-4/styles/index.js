@@ -3,9 +3,15 @@ import styled from "@mui/material/styles/styled";
 
 import BazaarCard from "components/BazaarCard";
 import { FlexBetween } from "components/flex-box";
-export const StyledBazaarCard = styled(BazaarCard)(({
-  theme
-}) => ({
+
+/**
+ * Styled component for the Bazaar card, providing layout and hover effects. 
+ * The card has a flexible layout, rounded corners, and transitions on hover, where a box shadow appears.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const StyledBazaarCard = styled(BazaarCard)(({ theme }) => ({
   height: "100%",
   margin: "auto",
   display: "flex",
@@ -23,9 +29,15 @@ export const StyledBazaarCard = styled(BazaarCard)(({
     }
   }
 }));
-export const HoverWrapper = styled(FlexBetween)(({
-  theme
-}) => ({
+
+/**
+ * Styled component for the hover wrapper, which holds controls like buttons or icons.
+ * It appears when the card is hovered, transitioning into view from below the card.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const HoverWrapper = styled(FlexBetween)(({ theme }) => ({
   left: 0,
   right: 0,
   width: 120,
@@ -56,9 +68,15 @@ export const HoverWrapper = styled(FlexBetween)(({
     color: theme.palette.grey[600]
   }
 }));
-export const ImageWrapper = styled("div")(({
-  theme
-}) => ({
+
+/**
+ * Styled component for wrapping the image inside the Bazaar card. 
+ * It centers the image and applies padding, while setting a background color and ensuring the image fills the available space.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const ImageWrapper = styled("div")(({ theme }) => ({
   minHeight: 288,
   display: "grid",
   overflow: "hidden",
@@ -68,6 +86,13 @@ export const ImageWrapper = styled("div")(({
   placeItems: "center",
   backgroundColor: theme.palette.grey[100]
 }));
+
+/**
+ * Styled component for the content inside the Bazaar card. 
+ * It manages the layout of the title, categories, and other elements, ensuring that text does not overflow the available space.
+ *
+ * @component
+ */
 export const ContentWrapper = styled("div")({
   gap: 8,
   display: "flex",

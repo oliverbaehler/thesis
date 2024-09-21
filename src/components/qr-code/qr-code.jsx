@@ -1,7 +1,9 @@
+import { Image } from 'next/image';
 import { useState } from 'react';
 import { QRCode } from 'react-qrcode-logo';
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from 'firebaseConfig';
+
 import { useAuth } from 'contexts/SessionContext'; 
 
 import { HexColorPicker } from 'react-colorful';
@@ -22,19 +24,21 @@ export default function QRCodeCustomizer({ open, anchorEl, handleClose, popup_id
   const [logoWidth, setLogoWidth] = useState(initialData?.logoWidth || 150);
 
   const handleLogoUpload = async (event) => {
-    if (event.target.files[0] && user) {
-      const file = event.target.files[0];
-      const storageRef = ref(storage, `${user.uid}/qr-code-logos/${id}`);
-
-      try {
-        await uploadBytes(storageRef, file);
-        const downloadURL = await getDownloadURL(storageRef);
-        setLogoUrl(downloadURL);
-        setLogoFile(file);
-      } catch (error) {
-        console.error("Error uploading logo: ", error);
-      }
-    }
+    console.log("ERRRRRR")
+    console.log(event)
+    //if (event.target.files[0] && user) {
+    //  const file = event.target.files[0];
+    //  const storageRef = ref(storage, `${user.uid}/qr-code-logos/${id}`);
+//
+    //  try {
+    //    await uploadBytes(storageRef, file);
+    //    const downloadURL = await getDownloadURL(storageRef);
+    //    setLogoUrl(downloadURL);
+    //    setLogoFile(file);
+    //  } catch (error) {
+    //    console.error("Error uploading logo: ", error);
+    //  }
+    //}
   };
 
   const handleSaveSettings = async () => {
@@ -122,7 +126,6 @@ export default function QRCodeCustomizer({ open, anchorEl, handleClose, popup_id
                   Upload Logo
                   <input type="file" hidden onChange={handleLogoUpload} />
                 </Button>
-                {logoUrl && <img src={logoUrl} alt="QR Code Logo Preview" style={{ width: 100, marginTop: '10px' }} />}
               </Box>
         
               <Box sx={{ mt: 2 }}>

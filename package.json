@@ -7,6 +7,10 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
+        "unit-test": "firebase emulators:exec 'npm run test'",
+        "test": "jest --coverage",
+        "e2e": "npx playwright test",
+        "e2e-test": "firebase emulators:exec 'npm run e2e'",
         "fix:prettier": "prettier --write . '!.next' '!.node_modules' '!tools/output/**/.next'"
     },
     "dependencies": {
@@ -28,9 +32,10 @@
         "crypto": "^1.0.1",
         "currency.js": "^2.0.4",
         "date-fns": "^3.3.1",
+        "dotenv": "^16.4.5",
+        "esdoc": "^1.1.0",
+        "esdoc-standard-plugin": "^1.0.0",
         "express": "^4.19.2",
-        "firebase": "^10.12.1",
-        "firebase-admin": "^11.11.1",
         "firebase-frameworks": "^0.11.3",
         "firebase-functions": "^5.0.1",
         "formik": "^2.4.5",
@@ -70,6 +75,8 @@
         "yup": "^1.3.3"
     },
     "devDependencies": {
+        "@firebase/rules-unit-testing": "^3.0.4",
+        "@playwright/test": "^1.47.0",
         "@types/node": "20.11.10",
         "@types/nprogress": "^0.2.3",
         "@types/react": "18.2.48",
@@ -79,6 +86,10 @@
         "@types/stylis": "^4.2.5",
         "eslint": "8.56.0",
         "eslint-config-next": "14.1.0",
+        "firebase": "^10.13.0",
+        "firebase-admin": "^11.11.1",
+        "next-route-visualizer": "^1.1.3",
         "typescript": "5.3.3"
-    }
+    },
+    "packageManager": "pnpm@9.9.0+sha512.60c18acd138bff695d339be6ad13f7e936eea6745660d4cc4a776d5247c540d0edee1a563695c183a66eb917ef88f2b4feb1fc25f32a7adcadc7aaf3438e99c1"
 }

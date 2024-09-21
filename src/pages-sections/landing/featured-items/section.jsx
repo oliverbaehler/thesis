@@ -8,14 +8,11 @@ import Heading from "../shared/heading";
 import { useEffect, useState } from "react";
 import { collection, getDocs, query, where, orderBy, limit  } from "firebase/firestore";
 import { db } from "firebaseConfig";
-import { useAuth } from "contexts/SessionContext";
 
 import ProductCard from "components/product-card/"; 
 
 export default function Section11() {
   const [products, setProducts] = useState([]);
-  const { user } = useAuth(); 
-
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -23,7 +20,7 @@ export default function Section11() {
         const q = query(
           productsRef,
           where("published", "==", true),
-          limit(6)
+          limit(8)
         );
         const querySnapshot = await getDocs(q);
 

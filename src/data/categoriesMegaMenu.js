@@ -1,4 +1,12 @@
 import Icons from "icons/duotone";
+
+/**
+ * Mega menu categories data structure, containing various categories and subcategories for use in navigation.
+ * Each category may have children with further nested items, and some entries include icons or images for display.
+ *
+ * @constant
+ * @type {Array<Object>}
+ */
 const categoriesMegaMenu = [{
   title: "Fashion",
   child: [{

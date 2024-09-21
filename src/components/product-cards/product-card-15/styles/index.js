@@ -1,9 +1,15 @@
 "use client";
 
 import styled from "@mui/material/styles/styled";
-export const StyledRoot = styled("div")(({
-  theme
-}) => ({
+
+/**
+ * Styled component for the root container of a card or element. 
+ * It has a border and a rounded appearance, with a hover effect that adds a shadow.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const StyledRoot = styled("div")(({ theme }) => ({
   borderRadius: 8,
   border: `1px solid ${theme.palette.divider}`,
   transition: "all 300ms ease-in-out",
@@ -11,9 +17,15 @@ export const StyledRoot = styled("div")(({
     boxShadow: theme.shadows[2]
   }
 }));
-export const PriceText = styled("p")(({
-  theme
-}) => ({
+
+/**
+ * Styled component for the price text. The main price is displayed in a bold, primary color.
+ * The `.base-price` class provides styling for a strikethrough original price, indicating a discount.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const PriceText = styled("p")(({ theme }) => ({
   gap: 8,
   fontSize: 17,
   lineHeight: 1,
@@ -28,9 +40,16 @@ export const PriceText = styled("p")(({
     color: theme.palette.grey[600]
   }
 }));
-export const Content = styled("div")(({
-  theme
-}) => ({
+
+/**
+ * Styled component for wrapping content within a card or section. 
+ * It applies padding and aligns items at the end of the container with space between them. 
+ * The `.button-group` class styles a group of buttons, and individual buttons have specific padding and background colors.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const Content = styled("div")(({ theme }) => ({
   padding: 18,
   display: "flex",
   alignItems: "end",

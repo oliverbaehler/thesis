@@ -65,7 +65,7 @@ export default function MobileHeader() {
         <FlexBox justifyContent="end" flex={1}>
         {user ? (
         <>
-          <IconButton onClick={handleNavigation}>
+          <IconButton className="dashboard-btn" onClick={handleNavigation}>
             <Icon.Home sx={ICON_STYLE} />
           </IconButton>
           <IconButton onClick={handleUser}>
@@ -77,7 +77,7 @@ export default function MobileHeader() {
           </IconButton>
         </>
         ) : (
-          <CustomButton onClick={toggleDialog} startIcon={<LoginIcon sx={{
+          <CustomButton onClick={toggleDialog} className="login-btn" startIcon={<LoginIcon sx={{
             color: "grey.900"
           }} />}>
               Login

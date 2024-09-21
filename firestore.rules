@@ -5,24 +5,44 @@ service cloud.firestore {
     // Rules for the collections collection
     match /collections/{collectionId} {
       allow read: if resource.data.published == true || request.auth != null && request.auth.uid == resource.data.createdBy;
-      allow create: if request.auth != null;
-      allow update: if request.auth != null && (
-          request.auth.uid == request.resource.data.createdBy || // Allow creator to update
-          (request.resource.data.userLikes.size() == resource.data.userLikes.size() + 1 && request.resource.data.userLikes.hasOnly([request.auth.uid])) || // Allow user to add their UID
-          (request.resource.data.userLikes.size() == resource.data.userLikes.size() - 1 && resource.data.userLikes.hasOnly([request.auth.uid])) // Allow user to remove their UID
-      );
+      // Only Check this on create, the other rules require a document to be present
+      allow create: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'creator';
+      allow update: if request.auth != null && request.auth.uid == resource.data.createdBy;
       allow delete: if request.auth != null && request.auth.uid == resource.data.createdBy;
+
+      match /likes/{likeId} {
+        allow read: if request.auth != null && 
+                    (get(/databases/$(database)/documents/collections/$(collectionId)).data.published == true || 
+                    get(/databases/$(database)/documents/collections/$(collectionId)).data.createdBy == request.auth.uid);
+        allow create: if request.auth.uid == likeId;
+        allow delete: if request.auth.uid == likeId;
+      }
     }
 
-    //// Rules for the collections collection
     match /products/{productId} {
       allow read: if resource.data.published == true || request.auth != null && request.auth.uid == resource.data.createdBy;
-      allow create: if request.auth != null; 
-      allow update, delete: if request.auth != null && request.auth.uid == resource.data.createdBy; 
+      allow create: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'creator';
+      allow update: if request.auth != null && request.auth.uid == resource.data.createdBy;
+      allow delete: if request.auth != null && request.auth.uid == resource.data.createdBy;
+
+      match /likes/{likeId} {
+        allow read: if request.auth != null && 
+                    (get(/databases/$(database)/documents/products/$(productId)).data.published == true || 
+                    get(/databases/$(database)/documents/products/$(productId)).data.createdBy == request.auth.uid);
+        allow create: if request.auth.uid == likeId;
+        allow delete: if request.auth.uid == likeId;
+      }
     }
-    //// Rules for the users collection
+
+    //match /users/{userId} {
+    //  // Allow anyone to read, create, update, and delete documents in the users collection
+    //  allow read, create, update, delete: if true;
+    //}
+
     match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId; 
+        allow read, create: if request.auth != null;
+        allow create: if request.auth != null && request.auth.uid == userId;
+        allow update: if request.auth != null && request.auth.uid == userId && !('storageSpaceUsed' in request.resource.data);
     }
   }
 }

@@ -1,5 +1,11 @@
 "use client";
 
+/**
+ * Imports of various icon components used throughout the application.
+ * Each import corresponds to an icon that represents a specific UI element, action, or entity.
+ * These icons can be used within different parts of the app to enhance the user interface.
+ */
+
 import AlarmClock from "./AlarmClock";
 import Apple from "./Apple";
 import AppleStore from "./AppleStore";
@@ -95,6 +101,13 @@ import Youtube from "./Youtube";
 import YoutubeFilled from "./YoutubeFilled";
 import Home from "./Home";
 
+/**
+ * An object containing all imported icon components, mapped by name.
+ * This allows the application to reference and use these icons in a modular way.
+ * 
+ * @constant
+ * @type {Object}
+ */
 const appIcons = {
   AlarmClock,
   Apple,

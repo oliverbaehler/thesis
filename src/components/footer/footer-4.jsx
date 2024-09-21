@@ -4,17 +4,11 @@ import Divider from "@mui/material/Divider";
 import Container from "@mui/material/Container"; 
 // LOCAL CUSTOM COMPONENT
 
-import AboutLinks from "./components/about-links";
-import SocialLinks from "./components/social-links";
-import CustomerCareLinks from "./components/customer-care-links"; 
-// GLOBAL CUSTOM COMPONENTS
-
 import LazyImage from "components/LazyImage";
 import { Paragraph } from "components/Typography";
 import FlexBetween from "components/flex-box/flex-between"; 
 // STYLED COMPONENT
 
-import { Heading } from "./styles";
 export default function Footer4() {
   return <Box component="footer" bgcolor="white" pt={12}>
       <Container>

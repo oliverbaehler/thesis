@@ -4,9 +4,15 @@ import Toolbar from "@mui/material/Toolbar";
 import styled from "@mui/material/styles/styled";
 import InputBase from "@mui/material/InputBase";
 import FlexRowCenter from "components/flex-box/flex-row-center";
-export const DashboardNavbarRoot = styled(AppBar)(({
-  theme
-}) => ({
+
+/**
+ * Styled component for the AppBar in the dashboard navigation bar.
+ * Provides custom styles for padding, background color, shadow, and text color.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   zIndex: 11,
   paddingTop: "1rem",
   paddingBottom: "1rem",
@@ -14,6 +20,13 @@ export const DashboardNavbarRoot = styled(AppBar)(({
   boxShadow: theme.shadows[2],
   color: theme.palette.text.primary
 }));
+
+/**
+ * Styled component for the Toolbar within the dashboard navigation bar.
+ * Adjusts padding and height of the toolbar across different screen sizes.
+ *
+ * @component
+ */
 export const StyledToolBar = styled(Toolbar)({
   "@media (min-width: 0px)": {
     paddingLeft: 0,
@@ -21,9 +34,15 @@ export const StyledToolBar = styled(Toolbar)({
     minHeight: "auto"
   }
 });
-export const ToggleWrapper = styled(FlexRowCenter)(({
-  theme
-}) => ({
+
+/**
+ * Styled component for a toggle button wrapper using FlexRowCenter for layout.
+ * The toggle button is hidden on larger screens and only visible on smaller screens ('lg' and below).
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const ToggleWrapper = styled(FlexRowCenter)(({ theme }) => ({
   width: 40,
   height: 40,
   flexShrink: 0,
@@ -35,9 +54,15 @@ export const ToggleWrapper = styled(FlexRowCenter)(({
     display: "flex"
   }
 }));
-export const CustomButton = styled(Button)(({
-  theme
-}) => ({
+
+/**
+ * Styled button component with a minimum height and specific padding.
+ * The button is hidden on extra small screens ('xs').
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const CustomButton = styled(Button)(({ theme }) => ({
   minHeight: 40,
   flexShrink: 0,
   marginLeft: 16,
@@ -48,9 +73,15 @@ export const CustomButton = styled(Button)(({
     display: "none"
   }
 }));
-export const StyledInputBase = styled(InputBase)(({
-  theme
-}) => ({
+
+/**
+ * Styled input field with custom padding, background color, and rounded corners.
+ * The input is hidden on medium screens ('md') and below.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const StyledInputBase = styled(InputBase)(({ theme }) => ({
   width: 200,
   padding: "5px 10px",
   borderRadius: "8px",

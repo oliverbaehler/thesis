@@ -14,7 +14,7 @@ import { Formik } from "formik";
 import * as yup from "yup"; 
 import { v4 as uuidv4 } from "uuid";
 import { db, storage } from "firebaseConfig";
-import { collection, doc, setDoc, getDocs, getDoc, query, where } from "firebase/firestore";
+import { collection, doc, updateDoc, setDoc, getDocs, getDoc, query, where } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, uploadString, deleteObject } from "firebase/storage";
 import { useAuth } from "contexts/SessionContext";
 
@@ -24,7 +24,6 @@ import { FlexBox } from "components/flex-box";
 import { Editor } from "components/editor"; 
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-
 import { UploadImageBox, StyledClear } from "../styles"; 
 
 // FORM FIELDS VALIDATION SCHEMA
@@ -59,7 +58,6 @@ export default function CollectionForm({ initialData, collectionId }) {
         });
       }
       setFiles(filesArray);
-      console.log(filesArray)
     }
   }, [initialData]);
 
@@ -86,7 +84,7 @@ export default function CollectionForm({ initialData, collectionId }) {
       const uploadedImageUrls = await uploadFiles(files.slice(1), collectionId, user.uid);
       const qr_code_url = generateQRCode(collectionId, user.uid);
 
-      await setDoc(docRef, {
+      const data = {
         ...values,
         name: values.name,
         content: content || "",
@@ -96,9 +94,12 @@ export default function CollectionForm({ initialData, collectionId }) {
         createdBy: user.uid,
         createdByName: userData.displayName,
         createdAt: new Date(),
-        qr_code: qr_code_url || "",
-      });
+        qr_code: qr_code_url || ""
+      };
 
+      await setDoc(docRef, {
+        ...data
+      });
       router.push(`/dashboard/collections/${collectionId}`);
 
     } catch (error) {

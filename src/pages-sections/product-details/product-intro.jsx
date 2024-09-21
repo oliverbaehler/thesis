@@ -6,7 +6,6 @@ import { useAuth } from "contexts/SessionContext";
 import Box from "@mui/material/Box";
 
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import { SectionCreator } from "components/section-header";
 
 import ProductDescription from "./product-description";
 import Grid from "@mui/material/Grid";
@@ -20,7 +19,7 @@ import { H1, H2, H3, H6 } from "components/Typography";
 import { FlexBox, FlexRowCenter } from "components/flex-box";  
 
 import { db } from "firebaseConfig";
-import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, collection } from "firebase/firestore";
+import { doc, getDoc, setDoc, deleteDoc, updateDoc, arrayUnion, arrayRemove, collection } from "firebase/firestore";
 
 // ================================================================
 export default function ProductIntro({
@@ -46,26 +45,33 @@ export default function ProductIntro({
   const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
-    if (user && userLikes.includes(user.uid)) {
-      setIsLiked(true);
-    }
-  }, [user, userLikes]);
-
+    const checkIfLiked = async () => {
+      if (user) {
+        const likeDocRef = doc(db, "products", id, "likes", user.uid);
+        const likeDoc = await getDoc(likeDocRef);
+        if (likeDoc.exists()) {
+          setIsLiked(true);
+        }
+      }
+    };
+  
+    checkIfLiked();
+  }, [user, id]);
+  
   const handleLikeToggle = async () => {
-    const collectionDocRef = doc(db, "products", id);
-
+    const likeDocRef = doc(db, "products", id, "likes", user.uid);
+    // Remove or add Like to subcollection
     if (isLiked) {
-      await updateDoc(collectionDocRef, {
-        userLikes: arrayRemove(user.uid)
-      });
+      await deleteDoc(likeDocRef);
     } else {
-      await updateDoc(collectionDocRef, {
-        userLikes: arrayUnion(user.uid)
+      // Like timestamp for sorting
+      await setDoc(likeDocRef, {
+        likedAt: new Date(),
       });
     }
-
+  
     setIsLiked(!isLiked);
-  };  
+  };
 
   const handleImageClick = ind => () => setSelectedImage(ind); 
 

@@ -1,3 +1,10 @@
+/**
+ * Array of country objects, each containing a label (the country's name) and a value (the country's code).
+ * This array is useful for dropdowns or selection components where users choose a country.
+ * 
+ * @constant
+ * @type {Array<{label: string, value: string}>}
+ */
 const countries = [{
   label: "Afghanistan",
   value: "AF"

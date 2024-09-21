@@ -1,7 +1,13 @@
 import styled from "@mui/material/styles/styled"; 
 // GLOBAL CUSTOM COMPONENT
-
 import { FlexBetween } from "components/flex-box";
+
+/**
+ * Styled component for the main Bazaar card container. It is a flexible, column-based layout 
+ * with overflow handling, designed to position elements between the top and bottom of the card.
+ *
+ * @component
+ */
 export const StyledBazaarCard = styled("div")({
   height: "100%",
   margin: "auto",
@@ -11,9 +17,15 @@ export const StyledBazaarCard = styled("div")({
   flexDirection: "column",
   justifyContent: "space-between"
 });
-export const ImageWrapper = styled("div")(({
-  theme
-}) => ({
+
+/**
+ * Styled component for wrapping the image inside the Bazaar card. It handles responsiveness 
+ * and displays hover effects, such as blurring the image and showing action buttons.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const ImageWrapper = styled("div")(({ theme }) => ({
   height: "100%",
   borderRadius: 8,
   overflow: "hidden",
@@ -32,6 +44,13 @@ export const ImageWrapper = styled("div")(({
     }
   }
 }));
+
+/**
+ * Styled component for the box that contains hover action buttons. 
+ * It is initially hidden and becomes visible on hover, centered within the image wrapper.
+ *
+ * @component
+ */
 export const HoverButtonBox = styled("div")({
   opacity: 0,
   top: "50%",
@@ -60,6 +79,13 @@ export const HoverButtonBox = styled("div")({
     }
   }
 });
+
+/**
+ * Styled component for the image container inside the Bazaar card. 
+ * It centers the image and applies padding and background styling, with a hover effect that applies a blur.
+ *
+ * @component
+ */
 export const ImageBox = styled("div")({
   opacity: 1,
   height: "100%",
@@ -69,9 +95,15 @@ export const ImageBox = styled("div")({
   background: "#F5F5F5",
   transition: "all .3s ease"
 });
-export const ItemController = styled(FlexBetween)(({
-  theme
-}) => ({
+
+/**
+ * Styled component for the item controller in the Bazaar card. It provides a flex layout with hover 
+ * effects and includes an interactive span and icons. It also applies background and shadow effects.
+ *
+ * @component
+ * @param {Object} theme - MUI theme object for custom styling.
+ */
+export const ItemController = styled(FlexBetween)(({ theme }) => ({
   background: "#fff",
   overflow: "hidden",
   borderRadius: "5px",
@@ -92,6 +124,13 @@ export const ItemController = styled(FlexBetween)(({
     color: theme.palette.grey[600]
   }
 }));
+
+/**
+ * Styled component for the content wrapper inside the Bazaar card. 
+ * It adds padding and ensures text elements like title and categories handle overflow gracefully by truncating.
+ *
+ * @component
+ */
 export const ContentWrapper = styled("div")({
   padding: "1rem",
   "& .title, & .categories": {
